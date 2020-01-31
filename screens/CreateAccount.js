@@ -1,35 +1,68 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, TextInput, TouchableOpacity, Text, ToastAndroid } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import * as firebase from 'firebase';
+import 'firebase/firestore';
+import Firebase from '../backend/firebase.js/'
 
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyC7THmTy5jrNwAW_BBk1xtQBLCqKzmY9TM",
-  authDomain: "pemapp-9eba9.firebaseapp.com",
-  databaseURL: "https://pemapp-9eba9.firebaseio.com",
-  storageBucket: "pemapp-9eba9.appspot.com",
-};
+var db = firebase.firestore(Firebase);
+var userCollection = db.collection('users')
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+function displayOKAlert(title, message){
+  Alert.alert(
+    title,
+    message,
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  );
 }
 
-var db = firebase.database();
+function createUserAccount(username, password){
+  userCollection.doc(username).get().then(function(doc){
+    if(doc.exists){
+      displayOKAlert('Username is taken!', 'Please try a different one.')
+    } else {
+      userCollection.doc(username).set({
+        email: username,
+        password: password
+      })
+      displayOKAlert('Success!', 'Your account has been created.')
+    }
+  }).catch(function(err) {
+    displayOKAlert('An error has occured', '')
+  }) 
+}
 
-function createUserAccount(userId){
-  db.ref('users/' + "G5zGCkDPju8krQS00euU").set({
-    password: "newPassword"
-  })
+let userInfo = {
+  userValue: "",
+  passwordValue: ""
+}
+
+function handleEmail(text){
+  userInfo.userValue = text
+}
+
+function handlePassword(text){
+  userInfo.passwordValue = text
 }
 
 export default function CreateAccount() {
+
   return (
     <View style={styles.container}>
-      <TextInput style={[styles.textField, styles.email]} placeholder='Email'></TextInput>
-      <TextInput secureTextEntry style={styles.textField} placeholder='Password'></TextInput>
+      <TextInput
+        style={[styles.textField, styles.email]}
+        placeholder='Email'
+        onChangeText={ handleEmail }
+      />
+      <TextInput 
+        secureTextEntry
+        style={styles.textField}
+        placeholder='Password' 
+        onChangeText={ handlePassword } 
+      />
       <TouchableOpacity style={styles.button} onPress={() => {
-        //This does nothing yet
-        createUserAccount()
+        createUserAccount(userInfo.userValue, userInfo.passwordValue)
       }}>
         <Text style={styles.text}>Confirm</Text>
       </TouchableOpacity>
