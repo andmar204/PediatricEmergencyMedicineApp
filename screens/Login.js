@@ -18,32 +18,42 @@ function displayOKAlert(title, message){
 }
 
 function logUserIn(username, password, props){
-  userCollection.doc(username).get().then(function(doc){
-    if(!doc.exists){
-      displayOKAlert(
-        'We don\'t have an account with that username!',
-        'Feel free to create an account'
-      );
-    } else {
-      let userData = doc.data()
-      if(userData.password === password){
-        props.navigation.navigate('Chatroom')
-      } else {
+  if(username.trim() == "" || password.trim() == ""){
+    displayOKAlert('Fields cannot be empty!', 'Please input a username and password.')
+  } else {
+    userCollection.doc(username).get().then(function(doc){
+      if(!doc.exists){
         displayOKAlert(
-          'Oh no!',
-          'That\'s the incorrect password'
+          'We don\'t have an account with that username!',
+          'Feel free to create an account'
         );
+      } else {
+        let userData = doc.data()
+        
+        /*
+        I really don't like the idea of sending the user's password to the chatroom,
+        so I am sending an object with just one key-value pair in it. 
+        */
+        let safeUserData = {username: userData.email}
+        if(userData.password === password){
+          props.navigation.navigate('Chatroom', safeUserData)
+        } else {
+          displayOKAlert(
+            'Oh no!',
+            'That\'s the incorrect password'
+          );
+        }
       }
-    }
-  }).catch(function(err) {
-    Alert.alert(
-      'An error has occured',
-      {err},
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]
-    );
-  }) 
+    }).catch(function(err) {
+      Alert.alert(
+        'An error has occured',
+        {err},
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]
+      );
+    }) 
+  }
 }
 
 let userInfo = {

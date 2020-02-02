@@ -18,19 +18,23 @@ function displayOKAlert(title, message){
 }
 
 function createUserAccount(username, password){
-  userCollection.doc(username).get().then(function(doc){
-    if(doc.exists){
-      displayOKAlert('Username is taken!', 'Please try a different one.')
-    } else {
-      userCollection.doc(username).set({
-        email: username,
-        password: password
-      })
-      displayOKAlert('Success!', 'Your account has been created.')
-    }
-  }).catch(function(err) {
-    displayOKAlert('An error has occured', '')
-  }) 
+  if(username.trim() == "" || password.trim() == ""){
+    displayOKAlert('Fields cannot be empty!', 'Please input a username and password.')
+  } else {
+    userCollection.doc(username).get().then(function(doc){
+      if(doc.exists){
+        displayOKAlert('Username is taken!', 'Please try a different one.')
+      } else {
+        userCollection.doc(username).set({
+          email: username,
+          password: password
+        })
+        displayOKAlert('Success!', 'Your account has been created.')
+      }
+    }).catch(function(err) {
+      displayOKAlert('An error has occured', '')
+    }) 
+  }
 }
 
 let userInfo = {

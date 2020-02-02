@@ -1,68 +1,92 @@
 import React from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+  KeyboardAvoidingView
+} from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import * as firebaseFunctions from 'firebase-functions' 
 import Firebase from '../backend/firebase.js/'
 
 var db = firebase.firestore(Firebase);
 var userCollection = db.collection('users')
+const functions = require('firebase-functions')
+
+let chatText = {
+  text: ""
+}
 
 function createUserAccount(username, password){
    
 }
 
 function handleText(text){
-  
+  chatText.text = text
 }
 
-export default function Chatroom() {
+
+
+export default function Chatroom(props) {
 
   return (
-    <View>
-      <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="position" enabled keyboardVerticalOffset='70'>
+      <View style={styles.view}>
         <TextInput
-          style={[styles.textField, styles.email]}
+          style={styles.textField}
           onChangeText={ handleText }
           multiline
+          onChangeText={ handleText }
         />
         <TouchableOpacity style={styles.button} onPress={() => {
-          //
+          handleText()
         }}>
           <Text style={styles.text}>Send</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 let screenHeight = Math.round(Dimensions.get('window').height)
+let screenWidth = Math.round(Dimensions.get('window').width)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 36,
-    flexDirection: 'row'
-  },
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  }, 
   textField: {
     height: 60,
     width: '80%',
-    textAlign: 'center',
+    textAlign: 'left',
     borderColor: 'gray',
-    borderWidth: 1
-  },
-  email: {
+    borderWidth: 1,
+    backgroundColor: '#fdfdfd'
   },
   button: {
     height: 60,
     backgroundColor: '#ddd',
     padding: 10,
-    width: '11%'
+    marginLeft: 10,
+    marginRight: 10
   },
   text: {
     flex: 1,
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  view: {
+    top: screenHeight * 0.4,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
