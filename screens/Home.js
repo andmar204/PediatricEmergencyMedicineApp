@@ -7,7 +7,7 @@ export default function Home(props) {
     <View style={styles.container}>
       <Category style={[styles.button, styles.leftCategory, styles.topCategory]} text="Medical" nav={props.navigation}/>
       <Category style={[styles.button, styles.rightCategory, styles.topCategory]} text="Surgical" nav={props.navigation}/>
-      <Category style={[styles.button, styles.leftCategory, styles.topMidCategory]} text="Trauma" nav={props.navigation}/>
+      <Category style={[styles.button, styles.leftCategory, styles.topMidCategory]} text="Trauma " nav={props.navigation}/>
       <Category style={[styles.button, styles.rightCategory, styles.topMidCategory]} text="Toxicology" nav={props.navigation}/>
       <Category style={[styles.button, styles.leftCategory, styles.botMidCategory]} text="Foreign Ingestion" nav={props.navigation}/>
       <Category style={[styles.button, styles.rightCategory, styles.botMidCategory]} text="Emergent Rashes Algorithm" nav={props.navigation}/>
