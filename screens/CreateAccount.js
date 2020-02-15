@@ -1,77 +1,88 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Firebase from '../backend/firebase.js/'
 
-var db = firebase.firestore(Firebase);
+var db = firebase.firestore(/*Firebase*/);
 var userCollection = db.collection('users')
 
-function displayOKAlert(title, message){
+function displayOKAlert(title, message) {
   Alert.alert(
     title,
-    message,
-    [
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
-    ]
+    message
   );
 }
 
-function createUserAccount(username, password){
-  if(username.trim() == "" || password.trim() == ""){
-    displayOKAlert('Fields cannot be empty!', 'Please input a username and password.')
-  } else {
-    userCollection.doc(username).get().then(function(doc){
-      if(doc.exists){
-        displayOKAlert('Username is taken!', 'Please try a different one.')
-      } else {
-        userCollection.doc(username).set({
-          email: username,
-          password: password
-        })
-        displayOKAlert('Success!', 'Your account has been created.')
-      }
-    }).catch(function(err) {
-      displayOKAlert('An error has occured', '')
-    }) 
+export default class CreateAccount extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      username: "",
+      password: ""
+    }
+    this.handleEmail = this.handleEmail.bind(this)
+    this.handlePassword = this.handlePassword.bind(this)
   }
-}
 
-let userInfo = {
-  userValue: "",
-  passwordValue: ""
-}
+  handleEmail(text){
+    this.setState({username: text})
+  }
+  
+  handlePassword(text){
+    this.setState({password: text})
+  }
 
-function handleEmail(text){
-  userInfo.userValue = text
-}
+  clearTextInputs(){
+    this.setState({username: "", password: ""})
+  }
 
-function handlePassword(text){
-  userInfo.passwordValue = text
-}
+  createUserAccount(username, password, props) {
+    firebase.auth().createUserWithEmailAndPassword(username, password).then(function () {
+      displayOKAlert('Success!', 'Your account has been created')
+      props.navigation.navigate('Login')
+      firebase.auth().signOut().then(function() {
+        console.log('User has been signed out')
+      }).catch(function () {
+        console.log('An error has occured in createUserAccount signOut: ',
+          err,
+          '\nU:', username,
+          '| P:', password);
+      })
+    }).catch(function (err) {
+      displayOKAlert('Oh no!', (err + "").substring(7))
+      console.log('An error has occured in createUserAccount createUserWithEmailAndPassword: ',
+        err,
+        '\nU:', username,
+        '| P:', password);
+    })
+    this.clearTextInputs()
+  }
 
-export default function CreateAccount() {
-
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={[styles.textField, styles.email]}
-        placeholder='Email'
-        onChangeText={ handleEmail }
-      />
-      <TextInput 
-        secureTextEntry
-        style={styles.textField}
-        placeholder='Password' 
-        onChangeText={ handlePassword } 
-      />
-      <TouchableOpacity style={styles.button} onPress={() => {
-        createUserAccount(userInfo.userValue, userInfo.passwordValue)
-      }}>
-        <Text style={styles.text}>Confirm</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  render() {
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={[styles.textField, styles.email]}
+          placeholder='Email'
+          onChangeText={this.handleEmail}
+          value={this.state.username}
+        />
+        <TextInput
+          secureTextEntry
+          style={styles.textField}
+          placeholder='Password (At least 6 characters)'
+          onChangeText={this.handlePassword}
+          value={this.state.password}
+        />
+        <TouchableOpacity style={styles.button} onPress={() => {
+          this.createUserAccount(this.state.username, this.state.password, this.props)
+        }}>
+          <Text style={styles.text}>Confirm</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
