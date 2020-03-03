@@ -6,7 +6,7 @@ import { AppLoading } from 'expo';
 
 import { createStackNavigator} from 'react-navigation-stack';
 
-//import MealsNavigator from './navigation/MealsNavigation';
+
 import PemNavigation from './navigation/PemNavigation';
 import {enableScreens} from 'react-native-screens';
 
