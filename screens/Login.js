@@ -25,52 +25,13 @@ function displayOKAlert(title, message) {
 }
 
 function logUserIn(username, password, props) {
-  userCollection.doc(username).get().then(function(doc){
-    if(doc.exists){
-      displayOKAlert('Sign in error', 'This account has already been signed in.\nMake sure you are signing in on only one device.')
-    } else {
-      firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
-        userCollection.doc(username).set({loggedIn: true})
-        console.log('User has been signed in and added to list')
-        props.navigation.navigate('Chatroom', { name: username })
-      }).catch(function(err){
-        displayOKAlert('No account with that email was found','Feel free to create an account first!')
-        console.log(err)
-      })
-    }
-  }).catch(function(err){
-    console.error('Error in logUserIn, doc(username).get():', err)
-  })
-
-  /*firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
-    userCollection.doc(username).get().then(function(){
-      if(doc.exists){
-        displayOKAlert('Sign in error', 'This account has already been signed in')
-      } else {
-        console.log('User has been signed in')
-        userCollection.doc(username).set({loggedIn: true})
-        props.navigation.navigate('Chatroom', { name: username })
-      }
-    }).catch(function(err){
-      console.log('Error in logUserIn, .get():', err)
-    })
-
-    console.log('User has been signed in')
-    userCollection.doc(username).set({loggedIn: true})
-    let userRef = firebase.database().ref('users')
-    userRef.child('users').once('value', function(snap){
-      console.log(snap)
-      if(!snap.exists()){
-        userRef.push(username)
-      } else {
-        displayOKAlert('Sign in error', 'This account has already been signed in')
-      }
-    })
+  firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
+    console.log('User has been signed in and added to list')
     props.navigation.navigate('Chatroom', { name: username })
   }).catch(function (err) {
-    displayOKAlert('Oh no!', (err + "").substring(7)) 
-    console.log('An error has occured in logUserIn: ', err);
-  });*/
+    displayOKAlert('No account with that email was found', 'Feel free to create an account first!')
+    console.log(err)
+  })
 }
 
 let userInfo = {
