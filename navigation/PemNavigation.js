@@ -5,6 +5,7 @@ import { createStackNavigator} from 'react-navigation-stack';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import SubCategoriesScreen from '../screens/SubCategoriesScreen';
 import CatContentScreen from '../screens/CatContentScreen';
+import ChatroomScreen from '../screens/ChatroomScreen';
 
 import Colors from '../constants/Colors';
 
@@ -18,6 +19,9 @@ import Colors from '../constants/Colors';
     },
     CatContent: {
       screen: CatContentScreen
+    },
+    Chatroom:{
+      screen: ChatroomScreen
     }
     
   },

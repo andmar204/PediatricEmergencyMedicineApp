@@ -14,18 +14,21 @@ const CategoriesScreen = props => {
       <CategoryGridTile
         title={itemData.item.title}
         color={itemData.item.color}
-        onSelect={() => { //onSelect func name trigget on component
-          props.navigation.navigate({
-            routeName: 'SubCategories',
-            params: {
-              categoryId: itemData.item.id
-            }
-          });
+        //onSelect func name trigget on component
+        onSelect={() => 
+          { 
+            if(itemData.item.title === 'Chatroom'){
+              props.navigation.navigate({routeName: 'Chatroom'})
+            }else
+            
+            
+            props.navigation.navigate({routeName: 'SubCategories',params: {categoryId: itemData.item.id}});
         }}
       />
     );
   };
 
+ 
 
 
   return (
