@@ -1,35 +1,76 @@
 import React, { Component } from 'react';
-import { 
-  StyleSheet, 
-  View, 
-  TextInput, 
-  TouchableOpacity, 
-  Text, 
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
   Alert,
-  KeyboardAvoidingView, 
-  Dimensions } from 'react-native';
+  KeyboardAvoidingView,
+  Dimensions
+} from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Firebase from '../backend/firebase.js/'
+import { user } from '../functions/node_modules/firebase-functions/lib/providers/auth';
 
-var db = firebase.firestore(/*Firebase*/);
+var db = firebase.firestore();
 var userCollection = db.collection('users')
 
-function displayOKAlert(title, message){
+function displayOKAlert(title, message) {
   Alert.alert(
     title,
     message
   );
 }
 
-function logUserIn(username, password, props){
-  firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
+function logUserIn(username, password, props) {
+  userCollection.doc(username).get().then(function(doc){
+    if(doc.exists){
+      displayOKAlert('Sign in error', 'This account has already been signed in.\nMake sure you are signing in on only one device.')
+    } else {
+      firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
+        userCollection.doc(username).set({loggedIn: true})
+        console.log('User has been signed in and added to list')
+        props.navigation.navigate('Chatroom', { name: username })
+      }).catch(function(err){
+        displayOKAlert('No account with that email was found','Feel free to create an account first!')
+        console.log(err)
+      })
+    }
+  }).catch(function(err){
+    console.error('Error in logUserIn, doc(username).get():', err)
+  })
+
+  /*firebase.auth().signInWithEmailAndPassword(username, password).then(function(){
+    userCollection.doc(username).get().then(function(){
+      if(doc.exists){
+        displayOKAlert('Sign in error', 'This account has already been signed in')
+      } else {
+        console.log('User has been signed in')
+        userCollection.doc(username).set({loggedIn: true})
+        props.navigation.navigate('Chatroom', { name: username })
+      }
+    }).catch(function(err){
+      console.log('Error in logUserIn, .get():', err)
+    })
+
     console.log('User has been signed in')
-    props.navigation.navigate('Chatroom', {name: username})
-  }).catch(function(err) {
-    displayOKAlert('Oh no!', (err+"").substring(7))
+    userCollection.doc(username).set({loggedIn: true})
+    let userRef = firebase.database().ref('users')
+    userRef.child('users').once('value', function(snap){
+      console.log(snap)
+      if(!snap.exists()){
+        userRef.push(username)
+      } else {
+        displayOKAlert('Sign in error', 'This account has already been signed in')
+      }
+    })
+    props.navigation.navigate('Chatroom', { name: username })
+  }).catch(function (err) {
+    displayOKAlert('Oh no!', (err + "").substring(7)) 
     console.log('An error has occured in logUserIn: ', err);
-  });
+  });*/
 }
 
 let userInfo = {
@@ -37,40 +78,40 @@ let userInfo = {
   passwordValue: ""
 }
 
-function handleEmail(text){
+function handleEmail(text) {
   userInfo.userValue = text
 }
 
-function handlePassword(text){
+function handlePassword(text) {
   userInfo.passwordValue = text
 }
 
 export default class Login extends Component {
 
-  render(){
+  render() {
     return (
       <KeyboardAvoidingView styles={styles.container} behavior="position" enabled keyboardVerticalOffset="100">
         <View styles={styles.view}>
-          <TextInput 
+          <TextInput
             style={[styles.textField, styles.email]}
             placeholder='Email'
-            onChangeText={ handleEmail }
+            onChangeText={handleEmail}
           />
           <TextInput
             secureTextEntry
             style={styles.textField}
             placeholder='Password'
-            onChangeText={ handlePassword }
+            onChangeText={handlePassword}
           />
           <TouchableOpacity style={styles.button} onPress={() => {
-              logUserIn(userInfo.userValue, userInfo.passwordValue, this.props)
-            }}
+            logUserIn(userInfo.userValue, userInfo.passwordValue, this.props)
+          }}
           >
             <Text style={styles.text}>Log in</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => {
-              this.props.navigation.navigate('CreateAccount')
-            }}
+            this.props.navigation.navigate('CreateAccount')
+          }}
           >
             <Text style={styles.text}>New? Create an account!</Text>
           </TouchableOpacity>
@@ -85,37 +126,37 @@ let screenHeight = Math.round(Dimensions.get('window').height)
 let screenWidth = Math.round(Dimensions.get('window').width)
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
 
-    }, 
-    textField: {
-        height: 60,
-        width: '80%',
-        textAlign: 'center',
-        alignSelf: 'center',
-        borderColor: 'gray',
-        borderWidth: 1
-    },
-    email: {
-        marginBottom: 30,
-        marginTop: screenHeight * 0.3
-    },
-    button: {
-        marginTop: 20,
-        backgroundColor: '#ddd',
-        alignSelf: 'center',
-        padding: 10,
-        width: 250
-    },
-    text: {
-        textAlign: 'center'
-    },
-    view: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column'
-    }
+  },
+  textField: {
+    height: 60,
+    width: '80%',
+    textAlign: 'center',
+    alignSelf: 'center',
+    borderColor: 'gray',
+    borderWidth: 1
+  },
+  email: {
+    marginBottom: 30,
+    marginTop: screenHeight * 0.3
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: '#ddd',
+    alignSelf: 'center',
+    padding: 10,
+    width: 250
+  },
+  text: {
+    textAlign: 'center'
+  },
+  view: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  }
 })

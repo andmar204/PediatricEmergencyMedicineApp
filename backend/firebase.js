@@ -29,9 +29,9 @@ class Firebase {
 
   onAuthStateChanged = user => {
     if (!user) {
-      console.log('There was no user!')
+      console.log('There was no user!', user)
     } else {
-      console.log('There is a user')
+      console.log('There is a user', user)
     }
   }
 
@@ -41,7 +41,8 @@ class Firebase {
 
   on = callback =>
     this.ref
-      .limitToLast(20)
+      .limitToLast(50000) //I don't want a limit for messages, so I just
+                          //use a really high number, like 50000.
       .on('child_added', snapshot => callback(this.parse(snapshot)));
 
   parse = snapshot => {
@@ -89,18 +90,3 @@ class Firebase {
 
 Firebase.shared = new Firebase()
 export default Firebase
-
-/*import * as firebase from 'firebase';
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyC7THmTy5jrNwAW_BBk1xtQBLCqKzmY9TM",
-  authDomain: "pemapp-9eba9.firebaseapp.com",
-  databaseURL: "https://pemapp-9eba9.firebaseio.com",
-  projectId: "pemapp-9eba9",
-  storageBucket: "pemapp-9eba9.appspot.com",
-};
-
-
-var Firebase =  firebase.initializeApp(firebaseConfig);
-export default Firebase*/

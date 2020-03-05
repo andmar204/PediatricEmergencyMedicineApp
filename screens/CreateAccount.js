@@ -43,7 +43,7 @@ export default class CreateAccount extends Component {
       props.navigation.navigate('Login')
       firebase.auth().signOut().then(function() {
         console.log('User has been signed out')
-      }).catch(function () {
+      }).catch(function (err) {
         console.log('An error has occured in createUserAccount signOut: ',
           err,
           '\nU:', username,

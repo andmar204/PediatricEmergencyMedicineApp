@@ -1,26 +1,65 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions, Button, Alert } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 import Firebase from '../backend/firebase.js/'
 
-class Chatroom extends Component {
+var db = firebase.firestore();
+var userCollection = db.collection('users')
 
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Chatroom',
-  });
+function displayOKAlert(title, message) {
+  Alert.alert(
+    title,
+    message
+  );
+}
+
+class Chatroom extends Component {
+  constructor(props) {
+    super(props)
+
+    this.signOut = this.signOut.bind(this)
+  }
 
   state = {
     messages: [],
   };
 
   componentDidMount() {
+    this.props.navigation.setParams({
+      headerRight: (<Button title='Sign out' onPress={() => {
+        console.log(this.props)
+        this.signOut(this.props)
+      }} />)
+    })
     Firebase.shared.on(message =>
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
       }))
     );
   }
-  
+
+  static navigationOptions = ({
+    navigation
+  }) => {
+    return {
+      headerRight: navigation.state.params && navigation.state.params.headerRight,
+    };
+  };
+
+  signOut = (props) => {
+    firebase.auth().signOut().then(function() {
+      userCollection.doc(props.navigation.getParam('name')).delete().catch(function(err){
+        console.log('Error in sign out, doc.delete()', err)
+      })
+      props.navigation.navigate('Login')
+    }).catch(function(err) {
+      displayOKAlert('Oh no!', 'Sign out failed: ' + err)
+    });
+
+  }
+
   componentWillUnmount() {
     Firebase.shared.off();
   }
@@ -43,77 +82,8 @@ class Chatroom extends Component {
     );
   }
 }
-const styles = StyleSheet.create({});
+
 export default Chatroom;
-
-
-
-
-
-/*import React from 'react';
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  Dimensions,
-  KeyboardAvoidingView,
-  ToastAndroid
-} from 'react-native';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-import Firebase from '../backend/firebase.js/'
-
-var db = firebase.firestore(Firebase);
-var userCollection = db.collection('users')
-var messageCollection = db.collection('messages')
-
-let chatText = {
-  text: "",
-  user: ""
-}
-
-function handleText(text, username){
-  chatText.text = text
-  chatText.user = username
-}
-
-function submitMessage(user){
-  chatText.user = user
-  const messageTime = new Date()
-  const messageTimestamp = firebase.firestore.Timestamp.fromDate(messageTime)
-
-  const messageId = chatText.user + "|"
-    + messageTimestamp.seconds + "|"
-    + messageTimestamp.nanoseconds
-
-  messageCollection.doc(messageId).set({
-    text: chatText.text,
-    time: messageTimestamp,
-    user: chatText.user
-  })
-}
-
-export default function Chatroom(props) {
-
-  return (
-    <KeyboardAvoidingView style={styles.container} behavior="position" enabled keyboardVerticalOffset='70'>
-      <View style={styles.view}>
-        <TextInput
-          style={styles.textField}
-          onChangeText={ (text) => handleText(text, props.navigation.getParam('username')) }
-          multiline
-        />
-        <TouchableOpacity style={styles.button} onPress={() => {
-          submitMessage(props.navigation.getParam('username'))
-        }}>
-          <Text style={styles.text}>Send</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
-  );
-}
 
 let screenHeight = Math.round(Dimensions.get('window').height)
 let screenWidth = Math.round(Dimensions.get('window').width)
@@ -122,8 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: 'center'
   },
   textField: {
     height: 60,
@@ -152,4 +121,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   }
-})*/
+})
