@@ -5,16 +5,20 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Firebase from '../backend/firebase'
 
-var db = firebase.firestore();
-var userCollection = db.collection('users')
-
 function displayOKAlert(title, message) {
   Alert.alert(
     title,
     message
-  );
-}
-
+    );
+  }
+  
+  function deleteAllMessages(){
+    firebase.database().ref('userCount').on('value',function(snapshot){
+      if(snapshot.val().count == 0){
+        firebase.database().ref('messages').remove();
+      }
+    });
+  }
 class Chatroom extends Component {
   constructor(props) {
     super(props)
@@ -47,18 +51,21 @@ class Chatroom extends Component {
     };
   };
 
+
   signOut = (props) => {
     firebase.auth().signOut().then(function() {
-      userCollection.doc(props.navigation.getParam('name')).delete().catch(function(err){
-        console.log('Error in sign out, doc.delete()', err)
-      })
       Firebase.shared.setUserCount = -1;
       console.log('FBUserCount decremented:',Firebase.shared.getUserCount)
+      firebase.database().ref('userCount').on('value', function(snapshot){
+        if(snapshot.val().count <= 0){
+          deleteAllMessages()
+        }
+      })
       props.navigation.navigate('Categories')
     }).catch(function(err) {
       displayOKAlert('Oh no!', 'Sign out failed: ' + err)
+      console.log(err)
     });
-
   }
 
   componentWillUnmount() {

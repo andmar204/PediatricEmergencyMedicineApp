@@ -13,9 +13,6 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Firebase from '../backend/firebase'
 
-/*var db = firebase.firestore();
-var userCollection = db.collection('users')*/
-
 function displayOKAlert(title, message) {
   Alert.alert(
     title,

@@ -45,17 +45,15 @@ class Firebase {
   }
   
   get getUserCount() {
-    firebase.database().ref('userCount').once('value').then(function(snapshot){
-      console.log('Returning snapshot.val()')
-      return snapshot.val();
+    let count = -9999; //Using this large number to detect if it never changes
+    firebase.database().ref('userCount').on('value', function(snapshot){
+      count = snapshot.val().count;
     })
-    console.log('NaN is being returned for getUserCount')
-    return NaN;
+    return count;
   }
   
   set setUserCount(num) {
     firebase.database().ref('userCount').once('value').then(function(snapshot){
-      console.log('SNAPVAL:',snapshot.val())
       firebase.database().ref('userCount').set({
         count: num == 1 ? snapshot.val().count + 1 : snapshot.val().count - 1
       })
