@@ -1,5 +1,5 @@
 import  React, { useState } from 'react';
-
+import {YellowBox} from 'react-native'
 import { Text, View } from 'react-native';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
@@ -10,6 +10,7 @@ import { createStackNavigator} from 'react-navigation-stack';
 import PemNavigation from './navigation/PemNavigation';
 import {enableScreens} from 'react-native-screens';
 
+YellowBox.ignoreWarnings(['Setting a timer', 'Deprecation in'])
 enableScreens();//not necesary for this app
 
 const fetchFonts = () => {

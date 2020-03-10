@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native';
+import * as firebase from 'firebase'
 
 import { CATEGORIES } from '../data/categoriesData';
 import CategoryGridTile from '../components/CategoryGridTile';
@@ -14,13 +15,18 @@ const CategoriesScreen = props => {
       <CategoryGridTile
         title={itemData.item.title}
         color={itemData.item.color}
-        //onSelect func name trigget on component
+        //onSelect func name triggers on component
         onSelect={() => {
           if (itemData.item.title === 'Chatroom') {
-            props.navigation.navigate({ routeName: 'Login' })
-          } else {
+            if (firebase.auth().currentUser) {
+              props.navigation.navigate('Chatroom', {name: firebase.auth().currentUser.email})
+            } else {
+              props.navigation.navigate({ routeName: 'Login' })
+            }
+            
+          }else {
             props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id } });
-          }           
+          }
         }}
       />
     );
@@ -46,7 +52,7 @@ const styles = StyleSheet.create({
 
 
 
-  tittles: {
+  titles: {
     fontSize: 25,
     color: '#CD5C5C',
     textAlign: 'center'

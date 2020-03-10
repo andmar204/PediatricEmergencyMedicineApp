@@ -11,11 +11,10 @@ import {
 } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import Firebase from '../backend/firebase.js/'
-import { user } from '../functions/node_modules/firebase-functions/lib/providers/auth';
+import Firebase from '../backend/firebase'
 
-var db = firebase.firestore();
-var userCollection = db.collection('users')
+/*var db = firebase.firestore();
+var userCollection = db.collection('users')*/
 
 function displayOKAlert(title, message) {
   Alert.alert(
@@ -26,7 +25,8 @@ function displayOKAlert(title, message) {
 
 function logUserIn(username, password, props) {
   firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
-    console.log('User has been signed in and added to list')
+    Firebase.shared.setUserCount = 1;
+    console.log('FBUserCount incremented:',Firebase.shared.getUserCount)
     props.navigation.navigate('Chatroom', { name: username })
   }).catch(function (err) {
     displayOKAlert('No account with that email was found', 'Feel free to create an account first!')
@@ -64,13 +64,13 @@ export default class Login extends Component {
             placeholder='Password'
             onChangeText={handlePassword}
           />
-          <TouchableOpacity style={styles.button} onPress={() => {
+          <TouchableOpacity style={styles.loginButton} onPress={() => {
             logUserIn(userInfo.userValue, userInfo.passwordValue, this.props)
           }}
           >
             <Text style={styles.text}>Log in</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => {
+          <TouchableOpacity style={styles.signUpButton} onPress={() => {
             this.props.navigation.navigate('SignUp')
           }}
           >
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
 
   },
   textField: {
+    fontFamily: 'open-sans-bold',
     height: 60,
     width: '80%',
     textAlign: 'center',
@@ -105,14 +106,24 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginTop: screenHeight * 0.3
   },
-  button: {
+  loginButton: {
     marginTop: 20,
     backgroundColor: '#ddd',
     alignSelf: 'center',
     padding: 10,
-    width: 250
+    width: 250,
+    backgroundColor: '#c0ffb8'
+  },
+  signUpButton: {
+    marginTop: 20,
+    backgroundColor: '#ddd',
+    alignSelf: 'center',
+    padding: 10,
+    width: 250,
+    backgroundColor: '#9ffa93'
   },
   text: {
+    fontFamily: 'open-sans-bold',
     textAlign: 'center'
   },
   view: {

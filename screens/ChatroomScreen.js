@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, Button, Alert } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import Firebase from '../backend/firebase.js/'
+import Firebase from '../backend/firebase'
 
 var db = firebase.firestore();
 var userCollection = db.collection('users')
@@ -29,7 +29,6 @@ class Chatroom extends Component {
   componentDidMount() {
     this.props.navigation.setParams({
       headerRight: (<Button title='Sign out' onPress={() => {
-        console.log(this.props)
         this.signOut(this.props)
       }} />)
     })
@@ -53,7 +52,9 @@ class Chatroom extends Component {
       userCollection.doc(props.navigation.getParam('name')).delete().catch(function(err){
         console.log('Error in sign out, doc.delete()', err)
       })
-      props.navigation.navigate('Login')
+      Firebase.shared.setUserCount = -1;
+      console.log('FBUserCount decremented:',Firebase.shared.getUserCount)
+      props.navigation.navigate('Categories')
     }).catch(function(err) {
       displayOKAlert('Oh no!', 'Sign out failed: ' + err)
     });

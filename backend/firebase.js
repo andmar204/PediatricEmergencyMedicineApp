@@ -5,7 +5,6 @@ class Firebase {
     this.init()
     this.observeAuth()
   }
-
   init = () => {
     if (!firebase.apps.length) {
       const firebaseConfig = {
@@ -15,12 +14,12 @@ class Firebase {
         projectId: "pemapp-9eba9",
         storageBucket: "pemapp-9eba9.appspot.com",
       };
-
+      
       firebase.initializeApp(firebaseConfig);
+      this.counter()
     } else {
       console.error('Firebase app was already initialized!')
     }
-
   }
 
   observeAuth = () => {
@@ -28,11 +27,39 @@ class Firebase {
   }
 
   onAuthStateChanged = user => {
-    if (!user) {
-      console.log('There was no user!', user)
+    if(user){
+      console.log('-----USER:',user.email,'-----')
     } else {
-      console.log('There is a user', user)
+      console.log('-----NO USER-----')
     }
+  }
+
+  counter = () => {
+    firebase.database().ref('userCount').once('value').then(function(snapshot){
+      if(snapshot.val() == null){
+        firebase.database().ref('userCount').set({
+          count: 0
+        })
+      }
+    })
+  }
+  
+  get getUserCount() {
+    firebase.database().ref('userCount').once('value').then(function(snapshot){
+      console.log('Returning snapshot.val()')
+      return snapshot.val();
+    })
+    console.log('NaN is being returned for getUserCount')
+    return NaN;
+  }
+  
+  set setUserCount(num) {
+    firebase.database().ref('userCount').once('value').then(function(snapshot){
+      console.log('SNAPVAL:',snapshot.val())
+      firebase.database().ref('userCount').set({
+        count: num == 1 ? snapshot.val().count + 1 : snapshot.val().count - 1
+      })
+    })
   }
 
   get ref() {
