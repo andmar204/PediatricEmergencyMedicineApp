@@ -1,5 +1,32 @@
+/*import { SearchBar } from 'react-native-elements';
 
-/* to be eddited....
+export default class App extends React.Component {
+  state = {
+    search: '',
+  };
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
+  render() {
+    const { search } = this.state;
+
+    return (
+      <SearchBar
+        placeholder="Type Here..."
+        onChangeText={this.updateSearch}
+        value={search}
+      />
+    );
+  }
+}
+*/
+
+
+
+
+
 
 import React, { useState} from 'react';
 import { StyleSheet, Text, View, TextInput, Button , ScrollView } from 'react-native';
@@ -51,4 +78,3 @@ const styles = StyleSheet.create({
 });
 
 
-*/
