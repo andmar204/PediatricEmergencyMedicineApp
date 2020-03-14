@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, Button, FlatList ,TouchableOpacity } from 'reac
 
 import {CATEGORIES} from '../data/categoriesData';
 import CategoryGridTile from '../components/CategoryGridTile';
+import * as firebase from 'firebase';
+
+
 
 
 
@@ -17,11 +20,16 @@ const CategoriesScreen = props => {
         //onSelect func name trigget on component
         onSelect={() => 
           { 
+            
             if(itemData.item.title === 'Chatroom'){
-              props.navigation.navigate({routeName: 'Chatroom'})
+              if (firebase.auth().currentUser){
+              props.navigation.navigate({routeName: 'Chatroom',name: firebase.auth().currentUser.email})}
+                else{
+                  props.navigation.navigate({routeName: 'Login'});
+                }
+            }else if (itemData.item.title === 'Search'){
+              props.navigation.navigate({routeName: 'Search'});
             }else
-            
-            
             props.navigation.navigate({routeName: 'SubCategories',params: {categoryId: itemData.item.id}});
         }}
       />
@@ -35,6 +43,14 @@ const CategoriesScreen = props => {
     <FlatList data = {CATEGORIES} renderItem ={renederGridItem} numColumns={2}/>
     
   );
+};
+
+CategoriesScreen.navigationOptions ={
+  headerTitle: 'PEDIATRIC EMERGENCY APP',
+  headerStyle: {
+    backgroundColor: 'white',
+  },
+
 };
 
 const styles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import Category from '../models/category';
-//import SubCategory from '../models/catContent';
+import CatContent from '../models/catContent';
 
 //color codes taken from https://www.w3schools.com/cssref/css_colors.asp
 
@@ -12,6 +12,35 @@ export const CATEGORIES = [
     new Category('c6', 'Emergent Rashes', '#41d95d'),
     new Category('c7', 'Search', '#9eecff'),
     new Category('c8', 'Chatroom', '#b9ffb0')
+  ];
+
+  export const CONTENT = [
+    new CatContent('c4-1',
+     [
+      'ACUTE INGESTION:',
+      'Doses requiring intervention: Adults and children &gt; 6 years, at least 10 g or 200 mg/kg (whichever is less),',
+      'within an 8-hour period. For children &lt; 6 years, 200 mg/kg or more within a 8-hour period.',
+      'REPEATED SUPRATHERAPEUTIC INGESTION (RSTI):',
+      'Doses requiring intervention: Adults and children &gt; 6 years, at least 10 g or 200 mg/kg, whichever is less,',
+      'in a single 24-hour period, or 6 g or 150 mg/kg, whichever is less, per 24-hour period for 48 hours or longer. For',
+      'children &lt; 6 years, 200 mg/kg or more over a single 24-hour period, or 150 mg/kg or more per 24 hours for the past',
+      '48 hours, or 100 mg/kg or more per 24 hours for 72 hours or more.'
+     ],
+      [
+        'SIGNS/SYMPTOMS',
+
+          'Since ingestion:',
+          '&lt; 24hrs – Asymptomatic or anorexia, nausea, vomiting, malaise, pallor, diaphoresis',
+          '1 – 3 days – Right upper quadrant pain, hepatomegaly, oliguria, elevated liver function tests/INR',
+          '3 – 4 days – Return of anorexia, nausea, vomiting, malaise; signs of hepatic failure; renal failure, cardiomyopathy',
+          '4 – 14 days – Recovery; non-cardiogenic pulmonary edema'
+      ],
+       'managemnetInfo',
+        'medicationInfo',
+        'referencesInfo'),
+
+    new CatContent('c1-2', 'evaluationInfo', 'SignsInfo', 'managemnetInfo', 'medicationInfo','referencesInfo')
+    
   ];
 
   export const SUBCATEGORIES = [
@@ -94,3 +123,5 @@ export const CATEGORIES = [
     //some content from Udemy.com
     */
   ];
+
+  

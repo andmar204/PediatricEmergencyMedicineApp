@@ -18,7 +18,7 @@ const SubCategoriesScreen = props => {
           props.navigation.navigate({
             routeName: 'CatContent',
             params: {
-              categoryId: itemData.item.id
+              SubCategoryId: itemData.item.id
             }
           });
         }}
@@ -28,13 +28,21 @@ const SubCategoriesScreen = props => {
 
   const catId = props.navigation.getParam('categoryId');
   //how to get specific subcategory
-  const displaySub = SUBCATEGORIES.filter(meal => meal.subId.indexOf(catId) >= 0);
+  const displaySub = SUBCATEGORIES.filter(cat => cat.subId.indexOf(catId) >= 0);
 
 
   return (
     <FlatList data = {displaySub} renderItem ={renederGridItem} numColumns={2}/>
 
   );
+};
+
+SubCategoriesScreen.navigationOptions ={
+  headerTitle: 'PEDIATRIC EMERGENCY APP',
+  headerStyle: {
+    backgroundColor: 'white',
+  },
+
 };
 
 const styles = StyleSheet.create({
