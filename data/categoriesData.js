@@ -11,7 +11,7 @@ export const CATEGORIES = [
     new Category('c5', 'Foreign Ingestion', '#368dff'),
     new Category('c6', 'Emergent Rashes', '#41d95d'),
     new Category('c7', 'Search', '#9eecff'),
-    new Category('c8', 'Chatroom', '#b9ffb0')
+    new Category('c8', 'Chatroom', '#00ffb8' /*'#b9ffb0'*/)
   ];
 
   export const SUBCATEGORIES = [

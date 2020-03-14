@@ -23,7 +23,6 @@ const CategoriesScreen = props => {
             } else {
               props.navigation.navigate({ routeName: 'Login' })
             }
-            
           }else {
             props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id } });
           }

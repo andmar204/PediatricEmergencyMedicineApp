@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
     borderColor: 'gray',
-    borderWidth: 1
+    borderWidth: 2,
+    borderRadius: 30,
   },
   email: {
     marginBottom: 30,
@@ -105,19 +106,22 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 20,
-    backgroundColor: '#ddd',
     alignSelf: 'center',
     padding: 10,
     width: 250,
-    backgroundColor: '#c0ffb8'
+    backgroundColor: '#00ffb8',
+    
+    borderRadius: 30,
   },
   signUpButton: {
     marginTop: 20,
-    backgroundColor: '#ddd',
+    borderColor: '#00e6a4',
+    borderWidth: 2,
     alignSelf: 'center',
     padding: 10,
     width: 250,
-    backgroundColor: '#9ffa93'
+    
+    borderRadius: 30,
   },
   text: {
     fontFamily: 'open-sans-bold',

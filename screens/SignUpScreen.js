@@ -92,22 +92,26 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textField: {
+    fontFamily: 'open-sans-bold',
     height: 60,
     width: '80%',
     textAlign: 'center',
     borderColor: 'gray',
-    borderWidth: 1
+    borderWidth: 2,
+    borderRadius: 30
   },
   email: {
     marginBottom: 30
   },
   button: {
     marginTop: 20,
-    backgroundColor: '#ddd',
+    borderRadius: 30,
+    backgroundColor: '#00ffb8',
     padding: 10,
     width: 250
   },
   text: {
+    fontFamily: 'open-sans-bold',
     textAlign: 'center'
   }
 })

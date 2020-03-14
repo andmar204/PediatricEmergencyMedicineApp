@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textField: {
+    fontFamily: 'open-sans-bold',
     height: 60,
     width: '80%',
     textAlign: 'center',
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
     width: 250
   },
   text: {
+    fontFamily: 'open-sans-bold',
     textAlign: 'center'
   }
 })
