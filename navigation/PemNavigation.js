@@ -8,9 +8,7 @@ import CatContentScreen from '../screens/CatContentScreen';
 import ChatroomScreen from '../screens/ChatroomScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-
 import Colors from '../constants/Colors';
-
 
  const PemNavigator = createStackNavigator ({
     Categories: {

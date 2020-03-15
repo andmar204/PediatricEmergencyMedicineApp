@@ -5,6 +5,7 @@ const FilterScreen = props => {
   return (
     <View style={styles.screen}>
       <Text>category content</Text>
+      <Text>{props.navigation.getParam('categoryId')}</Text>
     </View>
   );
 };

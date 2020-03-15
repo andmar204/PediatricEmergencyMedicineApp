@@ -11,14 +11,14 @@ export const CATEGORIES = [
     new Category('c5', 'Foreign Ingestion', '#368dff'),
     new Category('c6', 'Emergent Rashes', '#41d95d'),
     new Category('c7', 'Search', '#9eecff'),
-    new Category('c8', 'Chatroom', '#00ffb8' /*'#b9ffb0'*/)
+    new Category('c8', 'Chatroom', '#00ffb8')
   ];
 
   export const SUBCATEGORIES = [
       
-    //MEdical
-    new Category('c1-2', 'Status asthmaticus','#ffc6d0','c1'),
-    new Category('c1-3', 'Status epilepticus','#ffc6d0','c1'),
+    //Medical
+    new Category('c1-1', 'Status asthmaticus','#ffc6d0','c1'),
+    new Category('c1-2', 'Status epilepticus','#ffc6d0','c1'),
     new Category('c1-3', 'Sepsis','#ffcdd5','c1'),
     new Category('c1-4', 'Sickle cell and fever','#ffcdd5','c1'),
     new Category('c1-5', 'Pneumonia','#ffd3db','c1'),
@@ -40,7 +40,8 @@ export const CATEGORIES = [
     new Category('c1-21', 'Bacterial tracheitis','#fff2f5','c1'),
     new Category('c1-22', 'Croup','#fff2f5','c1'),
     new Category('c1-23', 'BRUE','#fff2f5','c1'),
-    //Surgial
+
+    //Surgical
     new Category('c2-1', 'Appendicitis', '#ff0d0d','c2'),
     new Category('c2-2', 'Testicular Torsion', '#ff0d0d','c2'),
     new Category('c2-3', 'Ovarian Torsion', '#ff2626','c2'),
@@ -57,7 +58,7 @@ export const CATEGORIES = [
     new Category('c2-14', 'Acute cholecystitis', '#ffa6a6','c2'),
     new Category('c2-15', 'Intussusception', '#ffa6a6','c2'),
     
-    //trauma
+    //Trauma
     new Category('c3-1', 'SPINE ', '#ffae19','c3'),
     new Category('c3-2', 'HEAD  ', '#ffae19','c3'),
     new Category('c3-3', 'MVC ', '#ffbc40','c3'),
@@ -68,7 +69,7 @@ export const CATEGORIES = [
     new Category('c3-8', 'TENSION PNEUMOTHORAX ', '#ffd68c','c3'),
     new Category('c3-9', 'CARDIAC TAMPONADE ', '#ffd68c','c3'),
         
-    //TOxicology
+    //Toxicology
     new Category('c4-1', 'ACETAMINOPHEN', '#d08b49','c4'),
     new Category('c4-2', 'IRON', '#d08b49','c4'),
     new Category('c4-3', 'SALICYLATE', '#d4975c','c4'),

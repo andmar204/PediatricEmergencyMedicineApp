@@ -45,7 +45,6 @@ function handlePassword(text) {
 }
 
 export default class Login extends Component {
-
   render() {
     return (
       <KeyboardAvoidingView styles={styles.container} behavior="position" enabled keyboardVerticalOffset="100">

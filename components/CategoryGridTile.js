@@ -8,8 +8,6 @@ import {
   TouchableNativeFeedback
 } from 'react-native';
 
-
-
 const CategoryGridTile = props => {
   let TouchableCmp = TouchableOpacity;
 

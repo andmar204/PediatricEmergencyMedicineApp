@@ -1,11 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native';
 import * as firebase from 'firebase'
-
 import { CATEGORIES } from '../data/categoriesData';
 import CategoryGridTile from '../components/CategoryGridTile';
-
-
 
 const CategoriesScreen = props => {
 
@@ -31,12 +28,8 @@ const CategoriesScreen = props => {
     );
   };
 
-
-
-
   return (
     <FlatList data={CATEGORIES} renderItem={renederGridItem} numColumns={2} />
-
   );
 };
 
@@ -48,16 +41,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue'
 
   },
-
-
-
   titles: {
     fontSize: 25,
     color: '#CD5C5C',
     textAlign: 'center'
   }
-
-
 });
 
 export default CategoriesScreen;
