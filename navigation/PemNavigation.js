@@ -8,6 +8,7 @@ import CatContentScreen from '../screens/CatContentScreen';
 import ChatroomScreen from '../screens/ChatroomScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import CMEScreen from '../screens/CMEScreen';
 import Colors from '../constants/Colors';
 
  const PemNavigator = createStackNavigator ({
@@ -22,6 +23,9 @@ import Colors from '../constants/Colors';
     },
     Chatroom:{
       screen: ChatroomScreen
+    },
+    CME: {
+      screen: CMEScreen
     },
     Login:{
       screen: LoginScreen

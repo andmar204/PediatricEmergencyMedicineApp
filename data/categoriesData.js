@@ -11,7 +11,7 @@ export const CATEGORIES = [
     new Category('c5', 'Foreign Ingestion', '#368dff'),
     new Category('c6', 'Emergent Rashes', '#41d95d'),
     new Category('c7', 'Search', '#9eecff'),
-    new Category('c8', 'Chatroom', '#00ffb8')
+    new Category('c8', 'Chatroom & CME', '#00ffb8')
   ];
 
   export const SUBCATEGORIES = [
@@ -86,6 +86,11 @@ export const CATEGORIES = [
     new Category('c4-14', 'LSD', '#ebceb2','c4'),
     new Category('c4-15', 'MARIJUANA', '#ebceb2','c4'),
     new Category('c4-16', 'ALCOHOLS', '#ebceb2','c4'),
+
+    //Chatroom and CME
+    new Category('c8-1', 'Chatroom', '#d08b49','c8'),
+    new Category('c8-2', 'CME', '#d08b49','c8'),
+    
     /*
     //
     new Category('c5', 'Foreign Ingestion', '#368dff'),

@@ -14,13 +14,13 @@ const CategoriesScreen = props => {
         color={itemData.item.color}
         //onSelect func name triggers on component
         onSelect={() => {
-          if (itemData.item.title === 'Chatroom') {
+          if (itemData.item.title === 'Chatroom & CME') {
             if (firebase.auth().currentUser) {
-              props.navigation.navigate('Chatroom', {name: firebase.auth().currentUser.email})
+              props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id } });
             } else {
               props.navigation.navigate({ routeName: 'Login' })
             }
-          }else {
+          } else {
             props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id } });
           }
         }}
