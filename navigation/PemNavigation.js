@@ -1,7 +1,7 @@
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
-import {createAppContainer} from 'react-navigation';
-import { createStackNavigator} from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import SubCategoriesScreen from '../screens/SubCategoriesScreen';
 import CatContentScreen from '../screens/CatContentScreen';
@@ -11,29 +11,29 @@ import SignUpScreen from '../screens/SignUpScreen';
 import CMEScreen from '../screens/CMEScreen';
 import Colors from '../constants/Colors';
 
- const PemNavigator = createStackNavigator ({
-    Categories: {
-      screen: CategoriesScreen
-    },
-    SubCategories: {
-      screen: SubCategoriesScreen
-    },
-    CatContent: {
-      screen: CatContentScreen
-    },
-    Chatroom:{
-      screen: ChatroomScreen
-    },
-    CME: {
-      screen: CMEScreen
-    },
-    Login:{
-      screen: LoginScreen
-    },
-    SignUp:{
-      screen: SignUpScreen
-    }    
+const PemNavigator = createStackNavigator({
+  Categories: {
+    screen: CategoriesScreen
   },
+  SubCategories: {
+    screen: SubCategoriesScreen
+  },
+  CatContent: {
+    screen: CatContentScreen
+  },
+  Chatroom: {
+    screen: ChatroomScreen
+  },
+  CME: {
+    screen: CMEScreen
+  },
+  Login: {
+    screen: LoginScreen
+  },
+  SignUp: {
+    screen: SignUpScreen
+  }
+},
   {
     // initialRouteName: 'Categories',
     defaultNavigationOptions: {
@@ -48,4 +48,4 @@ import Colors from '../constants/Colors';
 );
 
 
-export default createAppContainer( PemNavigator);
+export default createAppContainer(PemNavigator);

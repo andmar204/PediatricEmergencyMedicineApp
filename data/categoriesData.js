@@ -88,9 +88,9 @@ export const CATEGORIES = [
     new Category('c4-16', 'ALCOHOLS', '#ebceb2','c4'),
 
     //Chatroom and CME
-    new Category('c8-1', 'Chatroom', '#d08b49','c8'),
-    new Category('c8-2', 'CME', '#d08b49','c8'),
-    
+    new Category('c8-1', 'Chatroom', '#4dffcc','c8'),
+    new Category('c8-2', 'CME', '#4dffcc','c8'),
+
     /*
     //
     new Category('c5', 'Foreign Ingestion', '#368dff'),

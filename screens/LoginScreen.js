@@ -24,8 +24,7 @@ function logUserIn(username, password, props) {
   firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
     Firebase.shared.setUserCount = 1;
     console.log('FBUserCount incremented:',Firebase.shared.getUserCount)
-    //props.navigation.navigate('Chatroom', { name: username })
-    props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: 'c8' } });
+    props.navigation.replace({ routeName: 'SubCategories', params: { categoryId: 'c8' } });
   }).catch(function (err) {
     displayOKAlert('No account with that email was found', 'Feel free to create an account first!')
     console.log(err)

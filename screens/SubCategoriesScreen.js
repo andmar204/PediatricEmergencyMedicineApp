@@ -1,26 +1,128 @@
-import React from 'react';
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { CATEGORIES, SUBCATEGORIES } from '../data/categoriesData';
 import * as firebase from 'firebase'
+import 'firebase/firestore';
+import Firebase from '../backend/firebase'
 import CategoryGridTile from '../components/CategoryGridTile';
 
-const SubCategoriesScreen = props => {
+let categoryId
 
-  //added here to get acces to props
-  const renederGridItem = (itemData) => {
+function displayOKAlert(title, message) {
+  Alert.alert(
+    title,
+    message
+  );
+}
+
+function deleteAllMessages() {
+  firebase.database().ref('userCount').on('value', function (snapshot) {
+    if (snapshot.val().count == 0) {
+      firebase.database().ref('messages').remove();
+    }
+  });
+}
+
+export default class SubCategoriesScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.signOut = this.signOut.bind(this)
+  }
+
+  renederGridItem = (itemData) => {
+    categoryId = itemData.item.subId
     return (
       <CategoryGridTile
         title={itemData.item.title}
         color={itemData.item.color}
         onSelect={() => { //onSelect func name triggers on component
-          console.log('ITEMDATA', itemData.item)
           let isChatroom = itemData.item.id === 'c8-1'
           let isCME = itemData.item.id === 'c8-2'
 
           if (isChatroom) {
-            props.navigation.navigate('Chatroom', {name: firebase.auth().currentUser.email});
+            this.props.navigation.navigate('Chatroom', { name: firebase.auth().currentUser.email });
           } else if (isCME) {
-            props.navigation.navigate('CME', {name: firebase.auth().currentUser.email});
+            this.props.navigation.navigate('CME', { name: firebase.auth().currentUser.email });
+          } else {
+            this.props.navigation.navigate({
+              routeName: 'CatContent',
+              params: {
+                categoryId: itemData.item.id
+              }
+            });
+          }
+        }}
+      />
+    );
+  };
+
+  catId = this.props.navigation.getParam('categoryId');
+  //how to get specific subcategory
+  displaySub = SUBCATEGORIES.filter(meal => meal.subId.indexOf(this.catId) >= 0);
+
+  componentDidMount() {
+    if (categoryId === 'c8') {
+      this.props.navigation.setParams({
+        headerRight: (<Button title='Sign out' onPress={() => {
+          this.signOut(this.props)
+        }} />)
+      })
+    }
+  }
+
+  static navigationOptions = ({
+    navigation
+  }) => {
+    return {
+      headerRight: navigation.state.params && navigation.state.params.headerRight
+    };
+  };
+
+  signOut = (props) => {
+    firebase.auth().signOut().then(function () {
+      Firebase.shared.setUserCount = -1;
+      console.log('FBUserCount decremented:', Firebase.shared.getUserCount)
+      firebase.database().ref('userCount').on('value', function (snapshot) {
+        if (snapshot.val().count <= 0) {
+          deleteAllMessages()
+        }
+      })
+      props.navigation.navigate('Categories')
+    }).catch(function (err) {
+      displayOKAlert('Oh no!', 'Sign out failed: ' + err)
+      console.log(err)
+    });
+  }
+
+  render() {
+    return (
+      <FlatList data={this.displaySub} renderItem={this.renederGridItem} numColumns={2} />
+    );
+  }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+/*const SubCategoriesScreen = props => {
+
+  //added here to get access to props
+  const renederGridItem = (itemData) => {
+    if (itemData.item.subId === 'c8') {
+      console.log('IN C8 IF')
+    }
+
+    return (
+      <CategoryGridTile
+        title={itemData.item.title}
+        color={itemData.item.color}
+        onSelect={() => { //onSelect func name triggers on component
+          let isChatroom = itemData.item.id === 'c8-1'
+          let isCME = itemData.item.id === 'c8-2'
+
+          if (isChatroom) {
+            props.navigation.navigate('Chatroom', { name: firebase.auth().currentUser.email });
+          } else if (isCME) {
+            props.navigation.navigate('CME', { name: firebase.auth().currentUser.email });
           } else {
             props.navigation.navigate({
               routeName: 'CatContent',
@@ -29,7 +131,6 @@ const SubCategoriesScreen = props => {
               }
             });
           }
-
         }}
       />
     );
@@ -44,19 +145,4 @@ const SubCategoriesScreen = props => {
   );
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'blue'
-
-  },
-  titles: {
-    fontSize: 25,
-    color: '#CD5C5C',
-    textAlign: 'center'
-  }
-});
-
-export default SubCategoriesScreen;
+export default SubCategoriesScreen;*/
