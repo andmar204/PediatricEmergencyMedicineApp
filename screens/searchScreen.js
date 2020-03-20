@@ -17,15 +17,13 @@ const SearchScreen = props => {// to be call Search
   };
 
   const addToSearches = () => {
-    setSearch(currentSearch => [...search, enteredSearch] )
-    
+    setResult(enteredSearch)
+    //setSearch(currentSearch => [...search, enteredSearch] )
   };
 
   const displaySub = SUBCATEGORIES.filter(cat => cat.title.indexOf(result) >= 0);
 
-  const mody = () => {
-    setResult(search)
-    };
+  
     
 
     const renederGridItem = (itemData) => { 
@@ -51,20 +49,11 @@ const SearchScreen = props => {// to be call Search
       <View style = {styles.inputContainer}>
         <TextInput placeholder = "search..." 
         style = {styles.input} onChangeText = {searchInputHandler} Value = {enteredSearch}/>
-        <Button title = "Add" style = {styles.searchButton} onPress = {addToSearches} /> 
-        <Button title = "search" style = {styles.searchButton} onPress = {mody} />
-         
+        <Button title = "Search" style = {styles.searchButton} onPress = {addToSearches} />        
       </View>
-      <View><Text>{search}</Text></View>
-      
-
+  
       <FlatList data = {displaySub} renderItem ={renederGridItem} numColumns={1}/>
 
-
-      
-      
-   
-      
     </View>
   );
 }
