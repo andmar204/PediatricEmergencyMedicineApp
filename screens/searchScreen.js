@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button , FlatList } from 'react-nati
 import {CONTENT, SUBCATEGORIES} from '../data/categoriesData';
 import SearchGridtile from '../components/SearchGridTile';
 
-export default function App() {// to be call Search
+const SearchScreen = props => {// to be call Search
 
   const [enteredSearch, setEnteredSearch] = useState('');
   const [search, setSearch] = useState([]);
@@ -77,6 +77,9 @@ const styles = StyleSheet.create({
   searchButton: {borderStyle: 'solid' , borderColor: 'blue'}
   
 });
+
+
+export default SearchScreen;
 
 
 /* View of items before SearchGridtile
