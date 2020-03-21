@@ -38,7 +38,6 @@ export default class SubCategoriesScreen extends Component {
         onSelect={() => { //onSelect func name triggers on component
           let isChatroom = itemData.item.id === 'c8-1'
           let isCME = itemData.item.id === 'c8-2'
-
           if (isChatroom) {
             this.props.navigation.navigate('Chatroom', { name: firebase.auth().currentUser.email });
           } else if (isCME) {
