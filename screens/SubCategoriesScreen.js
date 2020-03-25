@@ -7,6 +7,7 @@ import Firebase from '../backend/firebase'
 import CategoryGridTile from '../components/CategoryGridTile';
 
 let categoryId
+let categoryTitle
 
 function displayOKAlert(title, message) {
   Alert.alert(
@@ -31,6 +32,7 @@ export default class SubCategoriesScreen extends Component {
 
   renederGridItem = (itemData) => {
     categoryId = itemData.item.subId
+    categoryTitle = this.props.navigation.getParam('categoryTitle')
     return (
       <CategoryGridTile
         title={itemData.item.title}
@@ -73,7 +75,8 @@ export default class SubCategoriesScreen extends Component {
     navigation
   }) => {
     return {
-      headerRight: navigation.state.params && navigation.state.params.headerRight
+      headerRight: navigation.state.params && navigation.state.params.headerRight,
+      title: categoryTitle
     };
   };
 

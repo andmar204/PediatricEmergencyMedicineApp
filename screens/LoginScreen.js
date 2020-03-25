@@ -23,7 +23,7 @@ function displayOKAlert(title, message) {
 function logUserIn(username, password, props) {
   firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
     Firebase.shared.setUserCount = 1;
-    console.log('FBUserCount incremented:',Firebase.shared.getUserCount)
+    console.log('FBUserCount incremented:', Firebase.shared.getUserCount)
     props.navigation.replace({ routeName: 'SubCategories', params: { categoryId: 'c8' } });
   }).catch(function (err) {
     displayOKAlert('No account with that email was found', 'Feel free to create an account first!')
@@ -45,6 +45,11 @@ function handlePassword(text) {
 }
 
 export default class Login extends Component {
+
+  static navigationOptions = {
+    title: 'Login',
+  };
+
   render() {
     return (
       <KeyboardAvoidingView styles={styles.container} behavior="position" enabled keyboardVerticalOffset="100">
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 250,
     backgroundColor: '#00ffb8',
-    
+
     borderRadius: 30,
   },
   signUpButton: {
@@ -119,7 +124,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     width: 250,
-    
+
     borderRadius: 30,
   },
   text: {

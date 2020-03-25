@@ -16,12 +16,14 @@ const CategoriesScreen = props => {
         onSelect={() => {
           if (itemData.item.title === 'Chatroom & CME') {
             if (firebase.auth().currentUser) {
-              props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id } });
+              props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id, categoryTitle: itemData.item.title } });
             } else {
               props.navigation.navigate({ routeName: 'Login' })
             }
+          } else if (itemData.item.title === 'Search') {
+            props.navigation.navigate({ routeName: 'Search' });
           } else {
-            props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id } });
+            props.navigation.navigate({ routeName: 'SubCategories', params: { categoryId: itemData.item.id, categoryTitle: itemData.item.title } });
           }
         }}
       />

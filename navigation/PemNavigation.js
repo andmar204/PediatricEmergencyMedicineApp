@@ -9,6 +9,7 @@ import ChatroomScreen from '../screens/ChatroomScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import CMEScreen from '../screens/CMEScreen';
+import SearchScreen from '../screens/SearchScreen';
 import Colors from '../constants/Colors';
 
 const PemNavigator = createStackNavigator({
@@ -32,6 +33,9 @@ const PemNavigator = createStackNavigator({
   },
   SignUp: {
     screen: SignUpScreen
+  },
+  Search: {
+    screen: SearchScreen
   }
 },
   {
@@ -41,8 +45,7 @@ const PemNavigator = createStackNavigator({
         backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : ''
       },
       headerTintColor:
-        Platform.OS === 'android' ? 'white' : Colors.primaryColor,
-      headerTitle: 'A Screen'
+        Platform.OS === 'android' ? 'white' : Colors.primaryColor
     }
   }
 );

@@ -20,6 +20,10 @@ function displayOKAlert(title, message) {
     });
   }
 class Chatroom extends Component {
+  static navigationOptions = {
+    title: 'Chatroom',
+  };
+
   constructor(props) {
     super(props)
 

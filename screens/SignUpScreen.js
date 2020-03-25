@@ -15,6 +15,11 @@ function displayOKAlert(title, message) {
 }
 
 export default class CreateAccount extends Component {
+
+  static navigationOptions = {
+    title: 'Sign Up',
+  };
+
   constructor(props){
     super(props)
     this.state = {
