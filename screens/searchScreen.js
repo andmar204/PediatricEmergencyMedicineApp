@@ -16,7 +16,7 @@ const SearchScreen = props => {// to be call Search
     setEnteredSearch(enteredText)
   };
 
-  const addToSearches = () => {
+  const searchWord = () => {
     setResult(enteredSearch)
     //setSearch(currentSearch => [...search, enteredSearch] )
   };
@@ -49,7 +49,7 @@ const SearchScreen = props => {// to be call Search
       <View style = {styles.inputContainer}>
         <TextInput placeholder = "search..." 
         style = {styles.input} onChangeText = {searchInputHandler} Value = {enteredSearch}/>
-        <Button title = "Search" style = {styles.searchButton} onPress = {addToSearches} />        
+        <Button title = "Search" style = {styles.searchButton} onPress = {searchWord} />        
       </View>
   
       <FlatList data = {displaySub} renderItem ={renederGridItem} numColumns={1}/>
