@@ -4,6 +4,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
   Text,
   Alert,
   KeyboardAvoidingView,
@@ -11,6 +12,7 @@ import {
 } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import logo from '../data/logo.png'
 //import Firebase from '../backend/firebase.js/'
 //import { user } from '../functions/node_modules/firebase-functions/lib/providers/auth';
 
@@ -51,8 +53,11 @@ export default class Login extends Component {
 
   render() {
     return (
+        
       <KeyboardAvoidingView styles={styles.container} behavior="position" enabled keyboardVerticalOffset="100">
+        
         <View styles={styles.view}>
+        
           <TextInput
             style={[styles.textField, styles.email]}
             placeholder='Email'
@@ -86,6 +91,14 @@ export default class Login extends Component {
 let screenHeight = Math.round(Dimensions.get('window').height)
 let screenWidth = Math.round(Dimensions.get('window').width)
 
+Login.navigationOptions ={
+    headerTitle: 'PEM APP',
+    headerStyle: {
+      backgroundColor: 'white',
+    },
+  
+  };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -98,19 +111,21 @@ const styles = StyleSheet.create({
     width: '80%',
     textAlign: 'center',
     alignSelf: 'center',
-    borderColor: 'gray',
+    borderColor: 'green',
     borderWidth: 1
   },
   email: {
     marginBottom: 30,
-    marginTop: screenHeight * 0.3
+    marginTop: screenHeight * 0.3,
+    borderColor: 'green'
   },
   button: {
     marginTop: 20,
     backgroundColor: '#ddd',
     alignSelf: 'center',
     padding: 10,
-    width: 250
+    width: 250,
+    color: 'green'
   },
   text: {
     textAlign: 'center'

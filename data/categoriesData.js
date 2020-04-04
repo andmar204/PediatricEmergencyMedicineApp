@@ -46,8 +46,8 @@ export const CATEGORIES = [
   export const SUBCATEGORIES = [
       
     //MEdical
-    new Category('c1-2', 'Status asthmaticus','#ffc6d0','c1'),
-    new Category('c1-3', 'Status epilepticus','#ffc6d0','c1'),
+    new Category('c1-1', 'Status asthmaticus','#ffc6d0','c1'),
+    new Category('c1-2', 'Status epilepticus','#ffc6d0','c1'),
     new Category('c1-3', 'Sepsis','#ffcdd5','c1'),
     new Category('c1-4', 'Sickle cell and fever','#ffcdd5','c1'),
     new Category('c1-5', 'Pneumonia','#ffd3db','c1'),

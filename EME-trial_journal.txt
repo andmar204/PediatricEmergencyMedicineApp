@@ -2,3 +2,22 @@
 
 
 npm install --save react-navigation-stack
+
+
+3/7/2020
+error:
+undefined Unable to resolve module `react-native-gifted-chat
+npm i react-native-gifted-chat@0.12.0-beta-1
+
+3/9/2020
+npm install -g firebase-tools
+npm install firebase // this added all the dependencies needed on package-lock.json
+
+3/30/2020
+on SearchBarScreen
+TypeError: undefined is not an object (evaluating 'result.toLowerCase')
+use: const [result, setResult] = useState('null');
+
+3/25/2020
+crypto variable not found
+firebase version downgrade
