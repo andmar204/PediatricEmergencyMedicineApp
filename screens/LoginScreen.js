@@ -53,8 +53,15 @@ export default class Login extends Component {
 
   render() {
     return (
+
+      
         
       <KeyboardAvoidingView styles={styles.container} behavior="position" enabled keyboardVerticalOffset="100">
+
+      <View>
+        <Image style={styles.logo} source ={require('../data/logo.png')}
+        />
+      </View>
         
         <View styles={styles.view}>
         
@@ -116,7 +123,7 @@ const styles = StyleSheet.create({
   },
   email: {
     marginBottom: 30,
-    marginTop: screenHeight * 0.3,
+    marginTop: screenHeight * 0.18,
     borderColor: 'green'
   },
   button: {
@@ -134,5 +141,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column'
+  },
+  logo: {
+    width: 250,
+    height: 150,
+    resizeMode: 'stretch',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginLeft:30
+    
   }
 })

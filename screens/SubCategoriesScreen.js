@@ -61,6 +61,7 @@ export default class SubCategoriesScreen extends Component {
   catId = this.props.navigation.getParam('categoryId');
   //how to get specific subcategory
   displaySub = SUBCATEGORIES.filter(meal => meal.subId.indexOf(this.catId) >= 0);
+  displaySubSort = this.displaySub.sort((a, b) => (a.title > b.title) ? 1 : -1);
 
   componentDidMount() {
     if (categoryId === 'c8') {
@@ -99,7 +100,7 @@ export default class SubCategoriesScreen extends Component {
 
   render() {
     return (
-      <FlatList data={this.displaySub} renderItem={this.renederGridItem} numColumns={2} />
+      <FlatList data={this.displaySubSort} renderItem={this.renederGridItem} numColumns={2} />
     );
   }
 }
