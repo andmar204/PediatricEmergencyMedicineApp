@@ -10,6 +10,70 @@ import { createStackNavigator } from 'react-navigation-stack';
 //import MealsNavigator from './navigation/MealsNavigation';
 import PemNavigation from './navigation/PemNavigation';
 import { enableScreens } from 'react-native-screens';
+/*
+I've been getting an error ever since I ran npm `install react-native-dialog-input`.
+First, it was saying it couldn't reslove firebase. Then it was saying it couldn't 
+resolve react-native-gifted-chat. I fixed those two. Now, it's saying "ReferenceError:
+Can't find variable: crypto". I got this solution from https://github.com/expo/expo/issues/7507.
+*/
+/*global.crypto = require("@firebase/firestore");
+global.crypto.getRandomValues = byteArray => {
+  for (let i = 0; i < byteArray.length; i++) {
+    byteArray[i] = Math.floor(256 * Math.random()); 
+  }
+};
+
+if (!global.btoa) {
+  global.btoa = encode;
+}
+
+if (!global.atob) {
+  global.atob = decode;
+}
+
+const _setTimeout = global.setTimeout;
+const _clearTimeout = global.clearTimeout;
+const MAX_TIMER_DURATION_MS = 60 * 1000;
+if (Platform.OS === "android") {
+  // Work around issue `Setting a timer for long time`
+  // see: https://github.com/firebase/firebase-js-sdk/issues/97
+  const timerFix = {};
+  const runTask = (id, fn, ttl, args) => {
+    const waitingTime = ttl - Date.now();
+    if (waitingTime <= 1) {
+      InteractionManager.runAfterInteractions(() => {
+        if (!timerFix[id]) {
+          return;
+        }
+        delete timerFix[id];
+        fn(...args);
+      });
+      return;
+    }
+
+    const afterTime = Math.min(waitingTime, MAX_TIMER_DURATION_MS);
+    timerFix[id] = _setTimeout(() => runTask(id, fn, ttl, args), afterTime);
+  };
+
+  global.setTimeout = (fn, time, ...args) => {
+    if (MAX_TIMER_DURATION_MS < time) {
+      const ttl = Date.now() + time;
+      const id = "_lt_" + Object.keys(timerFix).length;
+      runTask(id, fn, ttl, args);
+      return id;
+    }
+    return _setTimeout(fn, time, ...args);
+  };
+
+  global.clearTimeout = id => {
+    if (typeof id === "string" && id.startsWith("_lt_")) {
+      _clearTimeout(timerFix[id]);
+      delete timerFix[id];
+      return;
+    }
+    _clearTimeout(id);
+  };
+}*/
 
 /*
 There's this warning about "setting a timer" that shows up around every

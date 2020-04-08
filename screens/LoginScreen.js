@@ -23,7 +23,7 @@ function displayOKAlert(title, message) {
 function logUserIn(username, password, props) {
   firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
     Firebase.shared.setUserCount = 1;
-    console.log('FBUserCount incremented:', Firebase.shared.getUserCount)
+    Firebase.shared.addOnlineUser(username)
     props.navigation.replace({ routeName: 'SubCategories', params: { categoryId: 'c8' } });
   }).catch(function (err) {
     displayOKAlert('No account with that email was found', 'Feel free to create an account first!')
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 250,
     backgroundColor: '#00ffb8',
-
     borderRadius: 30,
   },
   signUpButton: {

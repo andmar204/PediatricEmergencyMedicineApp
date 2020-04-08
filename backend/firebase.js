@@ -14,9 +14,10 @@ class Firebase {
         projectId: "pemapp-9eba9",
         storageBucket: "pemapp-9eba9.appspot.com",
       };
-      
+
       firebase.initializeApp(firebaseConfig);
       this.counter()
+      this.whosOnline()
     } else {
       console.error('Firebase app was already initialized!')
     }
@@ -27,36 +28,90 @@ class Firebase {
   }
 
   onAuthStateChanged = user => {
-    if(user){
-      console.log('-----USER:',user.email,'-----')
+    if (user) {
+      //console.log('-----USER:', user.email, '-----')
     } else {
-      console.log('-----NO USER-----')
+      //console.log('-----NO USER-----')
     }
   }
 
   counter = () => {
-    firebase.database().ref('userCount').once('value').then(function(snapshot){
-      if(snapshot.val() == null){
+    firebase.database().ref('userCount').once('value').then(function (snapshot) {
+      if (snapshot.val() == null) {
         firebase.database().ref('userCount').set({
           count: 0
         })
       }
     })
   }
-  
+
+  whosOnline = () => {
+    firebase.database().ref('onlineUsers').once('value').then(function (snapshot) {
+      if (snapshot.val() == null) {
+        firebase.database().ref('onlineUsers').set({
+          onlineUsers: 0 //This isn't supposed to be a number, but I can't set it to an 
+          //empty array or empty object. So it'll be 0 until it gets set to
+          //an object later
+        })
+      }
+    })
+  }
+
   get getUserCount() {
     let count = -9999; //Using this large number to detect if it never changes
-    firebase.database().ref('userCount').on('value', function(snapshot){
+    firebase.database().ref('userCount').on('value', function (snapshot) {
       count = snapshot.val().count;
     })
     return count;
   }
-  
+
   set setUserCount(num) {
-    firebase.database().ref('userCount').once('value').then(function(snapshot){
+    firebase.database().ref('userCount').once('value').then(function (snapshot) {
       firebase.database().ref('userCount').set({
         count: num == 1 ? snapshot.val().count + 1 : snapshot.val().count - 1
       })
+    })
+  }
+
+  get getOnlineUsers() {
+    let onlineUsers = [];
+    firebase.database().ref('onlineUsers').on('value', function (snapshot) {
+      onlineUsers = snapshot.val().onlineUsers;
+    })
+    return onlineUsers;
+  }
+
+  addOnlineUser(userEmail) {
+    let userArr;
+    firebase.database().ref('onlineUsers').once('value').then(function (snapshot) {
+      userArr = snapshot.val().onlineUsers
+      if (userArr === 0) {
+        firebase.database().ref('onlineUsers').set({
+          onlineUsers: [userEmail]
+        })
+      } else {
+        userArr = snapshot.val().onlineUsers
+        userArr.push(userEmail)
+        firebase.database().ref('onlineUsers').set({
+          onlineUsers: userArr
+        })
+      }
+    })
+  }
+
+  removeOnlineUser(userEmail) {
+    firebase.database().ref('onlineUsers').once('value').then(function (snapshot) {
+      if ((snapshot.val().onlineUsers).length === 1) {
+        firebase.database().ref('onlineUsers').set({
+          onlineUsers: 0
+        })
+      } else {
+        let userArr = snapshot.val().onlineUsers
+        userArr = userArr.filter(email => email != userEmail)
+        firebase.database().ref('onlineUsers').set({
+          onlineUsers: userArr
+        })
+      }
     })
   }
 
@@ -67,7 +122,7 @@ class Firebase {
   on = callback =>
     this.ref
       .limitToLast(50000) //I don't want a limit for messages, so I just
-                          //use a really high number, like 50000.
+      //use a really high number, like 50000.
       .on('child_added', snapshot => callback(this.parse(snapshot)));
 
   parse = snapshot => {
@@ -91,6 +146,10 @@ class Firebase {
 
   get uid() {
     return (firebase.auth().currentUser || {}).uid;
+  }
+
+  get userEmail() {
+    return (firebase.auth().currentUser || {}).email;
   }
 
   get timestamp() {

@@ -81,9 +81,10 @@ export default class SubCategoriesScreen extends Component {
   };
 
   signOut = (props) => {
+    let signOutUser = Firebase.shared.userEmail
     firebase.auth().signOut().then(function () {
       Firebase.shared.setUserCount = -1;
-      console.log('FBUserCount decremented:', Firebase.shared.getUserCount)
+      Firebase.shared.removeOnlineUser(signOutUser)
       firebase.database().ref('userCount').on('value', function (snapshot) {
         if (snapshot.val().count <= 0) {
           deleteAllMessages()

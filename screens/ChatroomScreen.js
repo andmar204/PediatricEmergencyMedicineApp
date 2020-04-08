@@ -9,16 +9,17 @@ function displayOKAlert(title, message) {
   Alert.alert(
     title,
     message
-    );
-  }
-  
-  function deleteAllMessages(){
-    firebase.database().ref('userCount').on('value',function(snapshot){
-      if(snapshot.val().count == 0){
-        firebase.database().ref('messages').remove();
-      }
-    });
-  }
+  );
+}
+
+function deleteAllMessages() {
+  firebase.database().ref('userCount').on('value', function (snapshot) {
+    if (snapshot.val().count == 0) {
+      firebase.database().ref('messages').remove();
+    }
+  });
+}
+
 class Chatroom extends Component {
   static navigationOptions = {
     title: 'Chatroom',
@@ -28,17 +29,37 @@ class Chatroom extends Component {
     super(props)
 
     this.signOut = this.signOut.bind(this)
+    this.setOnlineUsers = this.setOnlineUsers.bind(this)
   }
 
   state = {
     messages: [],
+    onlineUsers: ''
   };
 
   componentDidMount() {
     this.props.navigation.setParams({
-      headerRight: (<Button title='Sign out' onPress={() => {
-        this.signOut(this.props)
-      }} />)
+      headerRight: (
+        <View /*style={{ flexDirection: "row" }}*/>
+          <Button
+            style={styles.signOutButton}
+            title='Sign out'
+            onPress={() => {
+              this.signOut(this.props)
+            }}
+          />
+          <Button
+            style={styles.whosOnlineButton}
+            title={"Who\'s online"}
+            onPress={() => {
+              displayOKAlert(
+                "Who\'s currently online",
+                '|' + 'test' + '|'
+              )
+            }}
+          />
+        </View>
+      )
     })
     Firebase.shared.on(message =>
       this.setState(previousState => ({
@@ -55,18 +76,22 @@ class Chatroom extends Component {
     };
   };
 
+  setOnlineUsers = () => {
+
+  }
 
   signOut = (props) => {
-    firebase.auth().signOut().then(function() {
+    let signOutUser = Firebase.shared.userEmail;
+    firebase.auth().signOut().then(function () {
       Firebase.shared.setUserCount = -1;
-      console.log('FBUserCount decremented:',Firebase.shared.getUserCount)
-      firebase.database().ref('userCount').on('value', function(snapshot){
-        if(snapshot.val().count <= 0){
+      Firebase.shared.removeOnlineUser(signOutUser)
+      firebase.database().ref('userCount').on('value', function (snapshot) {
+        if (snapshot.val().count <= 0) {
           deleteAllMessages()
         }
       })
       props.navigation.navigate('Categories')
-    }).catch(function(err) {
+    }).catch(function (err) {
       displayOKAlert('Oh no!', 'Sign out failed: ' + err)
       console.log(err)
     });
@@ -97,40 +122,13 @@ class Chatroom extends Component {
 
 export default Chatroom;
 
-let screenHeight = Math.round(Dimensions.get('window').height)
-let screenWidth = Math.round(Dimensions.get('window').width)
-
 const styles = StyleSheet.create({
-  container: {
+  signOutButton: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginRight: 3
   },
-  textField: {
-    height: 60,
-    width: '80%',
-    textAlign: 'left',
-    borderColor: 'gray',
-    borderWidth: 1,
-    backgroundColor: '#fdfdfd'
-  },
-  button: {
-    height: 60,
-    backgroundColor: '#ddd',
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 10
-  },
-  text: {
+  whosOnlineButton: {
     flex: 1,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  view: {
-    top: screenHeight * 0.4,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 6
   }
 })

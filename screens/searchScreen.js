@@ -8,8 +8,8 @@ const SearchScreen = props => {// to be call Search
   let changingText = '';
   const [enteredSearch, setEnteredSearch] = useState('');
   const [search, setSearch] = useState([]);
-  //const [result, setResult] = useState('null');//use null value because if it's empty, filter will display all
-  const [result, setResult] = useState();//use null value because if it's empty, filter will display all
+  const [result, setResult] = useState('null');//use null value because if it's empty, filter will display all
+  //const [result, setResult] = useState();//use null value because if it's empty, filter will display all
 
   const searchInputHandler = (enteredText) => {
     setEnteredSearch(enteredText)
