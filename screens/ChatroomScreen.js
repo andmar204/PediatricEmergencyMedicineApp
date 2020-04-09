@@ -5,12 +5,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Firebase from '../backend/firebase'
 
-function displayOKAlert(title, message) {
-  Alert.alert(
-    title,
-    message
-  );
-}
+
 
 function deleteAllMessages() {
   firebase.database().ref('userCount').on('value', function (snapshot) {
@@ -30,12 +25,39 @@ class Chatroom extends Component {
 
     this.signOut = this.signOut.bind(this)
     this.setOnlineUsers = this.setOnlineUsers.bind(this)
+    this.displayOKAlert = this.displayOKAlert.bind(this)
   }
 
   state = {
     messages: [],
     onlineUsers: ''
   };
+
+  displayOKAlert(title, message, forUsers) {
+    if (forUsers) {
+      Alert.alert(
+        title,
+        message,
+        [
+          {
+            text: 'Refresh', 
+            onPress: () => {
+              this.setOnlineUsers()
+              this.displayOKAlert("Who\'s currently online", this.state.onlineUsers, true)
+            }
+          },
+          { text: 'OK', onPress: () => { } },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      Alert.alert(
+        title,
+        message
+      );
+
+    }
+  }
 
   componentDidMount() {
     this.setOnlineUsers();
@@ -53,9 +75,10 @@ class Chatroom extends Component {
             style={styles.whosOnlineButton}
             title={"Who\'s online"}
             onPress={() => {
-              displayOKAlert(
+              this.displayOKAlert(
                 "Who\'s currently online",
-                this.state.onlineUsers
+                this.state.onlineUsers,
+                true
               )
             }}
           />
@@ -77,13 +100,13 @@ class Chatroom extends Component {
     };
   };
 
-  setOnlineUsers () {
+  setOnlineUsers() {
     console.log('RUNNING SETONLINEUSERS')
     let userStr = ''
-    firebase.database().ref('onlineUsers').on('value', function(snapshot){
+    firebase.database().ref('onlineUsers').on('value', function (snapshot) {
       let arr = snapshot.val().onlineUsers
       arr.forEach(element => {
-        if(!userStr.includes(element)){
+        if (!userStr.includes(element)) {
           userStr += element + '\n'
         }
       });
@@ -106,7 +129,7 @@ class Chatroom extends Component {
       })
       props.navigation.navigate('Categories')
     }).catch(function (err) {
-      displayOKAlert('Oh no!', 'Sign out failed: ' + err)
+      this.displayOKAlert('Oh no!', 'Sign out failed: ' + err, false)
       console.log(err)
     });
   }
