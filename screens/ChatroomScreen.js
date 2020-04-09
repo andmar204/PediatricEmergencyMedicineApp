@@ -38,6 +38,7 @@ class Chatroom extends Component {
   };
 
   componentDidMount() {
+    this.setOnlineUsers();
     this.props.navigation.setParams({
       headerRight: (
         <View /*style={{ flexDirection: "row" }}*/>
@@ -54,7 +55,7 @@ class Chatroom extends Component {
             onPress={() => {
               displayOKAlert(
                 "Who\'s currently online",
-                '|' + 'test' + '|'
+                this.state.onlineUsers
               )
             }}
           />
@@ -76,8 +77,21 @@ class Chatroom extends Component {
     };
   };
 
-  setOnlineUsers = () => {
-
+  setOnlineUsers () {
+    console.log('RUNNING SETONLINEUSERS')
+    let userStr = ''
+    firebase.database().ref('onlineUsers').on('value', function(snapshot){
+      let arr = snapshot.val().onlineUsers
+      arr.forEach(element => {
+        if(!userStr.includes(element)){
+          userStr += element + '\n'
+        }
+      });
+    })
+    this.setState({
+      onlineUsers: userStr
+    })
+    console.log('STATE IN SETONLINEUSERS', this.state.onlineUsers)
   }
 
   signOut = (props) => {
