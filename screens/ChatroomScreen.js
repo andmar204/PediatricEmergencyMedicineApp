@@ -5,8 +5,9 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Firebase from '../backend/firebase'
 
-
-
+/**
+ * Deletes all messages from chatroom once all users are signed out.
+ */
 function deleteAllMessages() {
   firebase.database().ref('userCount').on('value', function (snapshot) {
     if (snapshot.val().count == 0) {
@@ -33,6 +34,14 @@ class Chatroom extends Component {
     onlineUsers: ''
   };
 
+  /**
+   * Displays an alert box. If forUsers is set to true, then it will have a refresh button as well, 
+   * to refresh the list of online users it will be displaying. Otherwise, it will be a plain alert
+   * box.
+   * @param {string} title 
+   * @param {string} message 
+   * @param {boolean} forUsers 
+   */
   displayOKAlert(title, message, forUsers) {
     if (forUsers) {
       Alert.alert(
@@ -100,6 +109,9 @@ class Chatroom extends Component {
     };
   };
 
+  /**
+   * Sets the onlineUsers string. This is what will be passed to displayOKAlert.
+   */
   setOnlineUsers() {
     console.log('RUNNING SETONLINEUSERS')
     let userStr = ''
@@ -117,6 +129,12 @@ class Chatroom extends Component {
     console.log('STATE IN SETONLINEUSERS', this.state.onlineUsers)
   }
 
+  /**
+   * Signs the user out. This also takes care of the decrementing for userCount,
+   * the removal of the username from the onlineUsers list, and (if this user is
+   * the last one signed in) the deletion of all the messages. Once they're 
+   * signed out, they are sent back to the home page (CategoriesScreen).
+   */
   signOut = (props) => {
     let signOutUser = Firebase.shared.userEmail;
     firebase.auth().signOut().then(function () {

@@ -16,6 +16,9 @@ function displayOKAlert(title, message) {
   );
 }
 
+/**
+ * Deletes all messages from the database. 
+ */
 function deleteAllMessages() {
   firebase.database().ref('userCount').on('value', function (snapshot) {
     if (snapshot.val().count == 0) {
@@ -30,6 +33,10 @@ export default class SubCategoriesScreen extends Component {
     this.signOut = this.signOut.bind(this)
   }
 
+  /**
+   * Renders an item for the FlatList. This gets returned for every
+   * subcategory in a category. 
+   */
   renederGridItem = (itemData) => {
     categoryId = itemData.item.subId
     categoryTitle = this.props.navigation.getParam('categoryTitle')
@@ -61,6 +68,10 @@ export default class SubCategoriesScreen extends Component {
   //how to get specific subcategory
   displaySub = SUBCATEGORIES.filter(meal => meal.subId.indexOf(this.catId) >= 0);
 
+  /**
+   * This sets the sign out button to only appear if the user is in
+   * the Chatroom & CME category screen.
+   */
   componentDidMount() {
     if (categoryId === 'c8') {
       this.props.navigation.setParams({
@@ -80,6 +91,11 @@ export default class SubCategoriesScreen extends Component {
     };
   };
 
+  /**
+   * Signs a user out. This also takes care of the decrementing of userCount, 
+   * the removal of the username from the onlineUsers list, and of the message
+   * deletion if the user signing out is the last user that's signed in.
+   */
   signOut = (props) => {
     let signOutUser = Firebase.shared.userEmail
     firebase.auth().signOut().then(function () {
@@ -103,49 +119,3 @@ export default class SubCategoriesScreen extends Component {
     );
   }
 }
-
-//-----------------------------------------------------------------------------------------------------------------------------------
-
-/*const SubCategoriesScreen = props => {
-
-  //added here to get access to props
-  const renederGridItem = (itemData) => {
-    if (itemData.item.subId === 'c8') {
-      console.log('IN C8 IF')
-    }
-
-    return (
-      <CategoryGridTile
-        title={itemData.item.title}
-        color={itemData.item.color}
-        onSelect={() => { //onSelect func name triggers on component
-          let isChatroom = itemData.item.id === 'c8-1'
-          let isCME = itemData.item.id === 'c8-2'
-
-          if (isChatroom) {
-            props.navigation.navigate('Chatroom', { name: firebase.auth().currentUser.email });
-          } else if (isCME) {
-            props.navigation.navigate('CME', { name: firebase.auth().currentUser.email });
-          } else {
-            props.navigation.navigate({
-              routeName: 'CatContent',
-              params: {
-                categoryId: itemData.item.id
-              }
-            });
-          }
-        }}
-      />
-    );
-  };
-
-  const catId = props.navigation.getParam('categoryId');
-  //how to get specific subcategory
-  const displaySub = SUBCATEGORIES.filter(meal => meal.subId.indexOf(catId) >= 0);
-
-  return (
-    <FlatList data={displaySub} renderItem={renederGridItem} numColumns={2} />
-  );
-};
-
-export default SubCategoriesScreen;*/

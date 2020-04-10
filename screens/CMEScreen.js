@@ -12,14 +12,21 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Firebase from '../backend/firebase'
 
+//This will be the list of all CMEs the user has.
 let cmes = []
 
+//This represents one CME the user would like to
+//add to the list of CMEs. 
 let newCme = {
   newCmeCert: '',
   newCmeExp: ''
 }
 
 export default class CME extends Component {
+  /**
+   * This constructor initializes the cmes array.
+   * @param {Object} props 
+   */
   constructor(props) {
     firebase.database().ref('userCmes/userId:' + firebase.auth().currentUser.uid).once('value').then(function (snapshot) {
       console.log('SNAPSHOT.VAL', snapshot.val())
@@ -35,7 +42,6 @@ export default class CME extends Component {
     this.handleCmeCert = this.handleCmeCert.bind(this)
     this.handleCmeExp = this.handleCmeExp.bind(this)
     this.addCme = this.addCme.bind(this)
-    this.renderItem = this.renderItem.bind(this)
   }
   static navigationOptions = {
     title: 'CME',
@@ -49,8 +55,13 @@ export default class CME extends Component {
     newCme.newCmeExp = text
   }
 
+  /**
+   * Checks the userDate the user input to see if it's a valid date.
+   * "Valid", in this case, simply means "is a date" and "is tomorrow
+   * or later". 
+   * @param {string} userDate 
+   */
   isValidDate(userDate) {
-    //In this case, "valid" just means "did the user input a date" and "is the date tomorrow or later"
     let expDateMillis = Date.parse(userDate)
     if (expDateMillis === NaN) {
       console.log('RETURNING FIRST FALSE')
@@ -61,8 +72,8 @@ export default class CME extends Component {
 
     if (todayMillis - expDateMillis >= 0) {
       /*
-      If todayMillis - expDateMillis >= 0, then that means that the expiration date is either the same day
-      or earlier than the current date. I'm not allowing this since expiration dates supposed to be in the
+      If todayMillis - expDateMillis >= 0, then that means that the renewal date is either the same day
+      or earlier than the current date. I'm not allowing this since renewal dates supposed to be in the
       future.
       */
       console.log('RETURNING SECOND FALSE')
@@ -72,6 +83,12 @@ export default class CME extends Component {
     return true
   }
 
+  /**
+   * Adds a newCme to the cmes array. It checks if the newCmeCert field is
+   * NOT empty and if newCmeExp is a valid date. If both of those check out,
+   * newCme is added and this.state.cmes is set to the cmes list. It also
+   * sets the userCmes in Firebase to the cmes list. 
+   */
   addCme() {
     console.log('NEWCME:', newCme)
     if (newCme.newCmeCert != '' && this.isValidDate(newCme.newCmeExp)) {
@@ -93,12 +110,6 @@ export default class CME extends Component {
     } else {
       console.log('One or both of the fields in newCme are empty. We can\'t have that.')
     }
-  }
-
-  renderItem(cme) {
-    return (
-      <Text>{cme.item.cert + ':' + cme.item.exp}</Text>
-    )
   }
 
   render() {

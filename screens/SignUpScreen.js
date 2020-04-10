@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import Firebase from '../backend/firebase.js/'
 
-var db = firebase.firestore(/*Firebase*/);
-var userCollection = db.collection('users')
-
+/**
+ * Displays an alert box with the specified title
+ * and message. 
+ * @param {string} title 
+ * @param {string} message 
+ */
 function displayOKAlert(title, message) {
   Alert.alert(
     title,
@@ -38,10 +40,23 @@ export default class CreateAccount extends Component {
     this.setState({password: text})
   }
 
+  /**
+   * Clears the text inputs. This is so that if there's an error, 
+   * the user doesn't have to backspace everything they put. 
+   */
   clearTextInputs(){
     this.setState({username: "", password: ""})
   }
 
+  /**
+   * Creates an account with the specified username and password. If it works, 
+   * an alert box is displayed, the user is brought to the Login page, and the 
+   * user is signed out (because creating an account automatically signs the user
+   * in). If it fails, an alert box is shown notifying the user of the error. 
+   * @param {string} username 
+   * @param {string} password 
+   * @param {Object} props 
+   */
   createUserAccount(username, password, props) {
     firebase.auth().createUserWithEmailAndPassword(username, password).then(function () {
       displayOKAlert('Success!', 'Your account has been created')

@@ -9,7 +9,6 @@ const SearchScreen = props => {// to be call Search
   const [enteredSearch, setEnteredSearch] = useState('');
   const [search, setSearch] = useState([]);
   const [result, setResult] = useState('null');//use null value because if it's empty, filter will display all
-  //const [result, setResult] = useState();//use null value because if it's empty, filter will display all
 
   const searchInputHandler = (enteredText) => {
     setEnteredSearch(enteredText)
@@ -19,15 +18,7 @@ const SearchScreen = props => {// to be call Search
     setResult(enteredSearch)
   };
 
-  //const displaySub = SUBCATEGORIES.filter(cat => cat.title.indexOf(result) >= 0);
-
-  //1) Go through all subcategories and get words that contain enteredSearch
-  //2) Put those in an array
-  //3) Set displaySub to that array
-
-  //const containingWord = SUBCATEGORIES.filter(cat => (cat.title.includes(changingText)));
   const displaySub = SUBCATEGORIES.filter(cat => ((cat.title).toLowerCase().indexOf(result.toLowerCase()) >= 0) && cat.title != 'Chatroom' && cat.title != 'CME');
-  //const displaySub = containingWord;
 
   const renederGridItem = (itemData) => {
     return (

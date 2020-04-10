@@ -20,6 +20,14 @@ function displayOKAlert(title, message) {
   );
 }
 
+/**
+ * Logs a user in with the specified username and password. This also increments
+ * userCount, adds the username to the onlineUsers list, and sends them to the 
+ * Chatroom & CME screen.
+ * @param {string} username 
+ * @param {string} password 
+ * @param {Object} props 
+ */
 function logUserIn(username, password, props) {
   firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
     Firebase.shared.setUserCount = 1;
