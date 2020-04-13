@@ -38,7 +38,7 @@ const SearchScreen = props => {// to be call Search
           props.navigation.navigate({
             routeName: 'CatContent',
             params: {
-              categoryId: itemData.item.id
+              subcategoryId: itemData.item.id
             }
           });
         }}
