@@ -4,20 +4,15 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Image,
   Text,
   Alert,
   KeyboardAvoidingView,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import logo from '../data/logo.png'
-//import Firebase from '../backend/firebase.js/'
-//import { user } from '../functions/node_modules/firebase-functions/lib/providers/auth';
-
-var db = firebase.firestore();
-var userCollection = db.collection('users')
+import Firebase from '../backend/firebase'
 
 function displayOKAlert(title, message) {
   Alert.alert(
@@ -28,8 +23,9 @@ function displayOKAlert(title, message) {
 
 function logUserIn(username, password, props) {
   firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
-    console.log('User has been signed in and added to list')
-    props.navigation.navigate('Chatroom', { name: username })
+    Firebase.shared.setUserCount = 1;
+    Firebase.shared.addOnlineUser(username)
+    props.navigation.replace({ routeName: 'SubCategories', params: { categoryId: 'c8' } });
   }).catch(function (err) {
     displayOKAlert('No account with that email was found', 'Feel free to create an account first!')
     console.log(err)
@@ -51,20 +47,19 @@ function handlePassword(text) {
 
 export default class Login extends Component {
 
+  static navigationOptions = {
+    title: 'Login',
+  };
+
   render() {
     return (
-
-      
-        
       <KeyboardAvoidingView styles={styles.container} behavior="position" enabled keyboardVerticalOffset="100">
-
-      <View>
+        <View>
         <Image style={styles.logo} source ={require('../data/logo.png')}
         />
       </View>
-        
+
         <View styles={styles.view}>
-        
           <TextInput
             style={[styles.textField, styles.email]}
             placeholder='Email'
@@ -76,13 +71,13 @@ export default class Login extends Component {
             placeholder='Password'
             onChangeText={handlePassword}
           />
-          <TouchableOpacity style={styles.button} onPress={() => {
+          <TouchableOpacity style={styles.loginButton} onPress={() => {
             logUserIn(userInfo.userValue, userInfo.passwordValue, this.props)
           }}
           >
             <Text style={styles.text}>Log in</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => {
+          <TouchableOpacity style={styles.signUpButton} onPress={() => {
             this.props.navigation.navigate('SignUp')
           }}
           >
@@ -98,14 +93,6 @@ export default class Login extends Component {
 let screenHeight = Math.round(Dimensions.get('window').height)
 let screenWidth = Math.round(Dimensions.get('window').width)
 
-Login.navigationOptions ={
-    headerTitle: 'PEM APP',
-    headerStyle: {
-      backgroundColor: 'white',
-    },
-  
-  };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -114,27 +101,39 @@ const styles = StyleSheet.create({
 
   },
   textField: {
+    fontFamily: 'open-sans-bold',
     height: 60,
     width: '80%',
     textAlign: 'center',
     alignSelf: 'center',
-    borderColor: 'green',
-    borderWidth: 1
+    borderColor: 'gray',
+    borderWidth: 2,
+    borderRadius: 30,
   },
   email: {
     marginBottom: 30,
-    marginTop: screenHeight * 0.18,
-    borderColor: 'green'
+    marginTop: screenHeight * 0.18
   },
-  button: {
+  loginButton: {
     marginTop: 20,
-    backgroundColor: '#ddd',
     alignSelf: 'center',
     padding: 10,
     width: 250,
-    color: 'green'
+    backgroundColor: '#00ffb8',
+    borderRadius: 30,
+  },
+  signUpButton: {
+    marginTop: 20,
+    borderColor: '#00e6a4',
+    borderWidth: 2,
+    alignSelf: 'center',
+    padding: 10,
+    width: 250,
+
+    borderRadius: 30,
   },
   text: {
+    fontFamily: 'open-sans-bold',
     textAlign: 'center'
   },
   view: {
@@ -152,3 +151,4 @@ const styles = StyleSheet.create({
     
   }
 })
+

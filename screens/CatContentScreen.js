@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import * as firebase from 'firebase'
 import 'firebase/firestore';
+import CategoriesScreen from './CategoriesScreen';
+import { CATEGORIES, SUBCATEGORIES } from '../data/categoriesData';
 
 export default class FilterScreen extends Component {
   constructor(props) {
@@ -17,7 +19,7 @@ export default class FilterScreen extends Component {
     set: false
   }
 
-  dataPromise = firebase.firestore().collection('data').doc(this.props.navigation.getParam('categoryId')).get()
+  dataPromise = firebase.firestore().collection('data').doc(this.props.navigation.getParam('subcategoryId')).get()
     .then((doc) => {
       if (doc.exists) {
         this.setState({
@@ -37,19 +39,23 @@ export default class FilterScreen extends Component {
   render() {
     if (this.state.set === true) {
       return (
-        <View style={styles.screen}>
+        //<View style={styles.screen}>
+        <ScrollView style={styles.screen}>
+          <View>  
           <Text style={styles.header}>EVALUATION</Text>
           <Text style={styles.content}>{this.state.evaluation}</Text>
+          </View>
+          <Text style={styles.header}>SYMPTOMS</Text>
+          <Text style={styles.content}>{this.state.symptoms}</Text>
           <Text style={styles.header}>MANAGEMENT</Text>
           <Text style={styles.content}>{this.state.management}</Text>
           <Text style={styles.header}>MEDICATION</Text>
           <Text style={styles.content}>{this.state.medications}</Text>
-          <Text style={styles.header}>SYMPTOMS</Text>
-          <Text style={styles.content}>{this.state.symptoms}</Text>
           <Text style={styles.header}>REFERENCES</Text>
           <Text style={styles.content}>{this.state.references}</Text>
-        </View>
-      )
+          
+        </ScrollView>
+      ) 
     }
     return (
       <View style={styles.screen}>
@@ -61,22 +67,38 @@ export default class FilterScreen extends Component {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    padding:20,
+    flex: 1
   },
   header: {
     fontSize: 20,
     fontWeight: 'bold',
     borderBottomWidth: 1,
     width: 250,
-    borderBottomColor: 'red',
-    textAlign: 'center'
+    borderBottomColor: 'black',
+    textAlign: 'center',
+    color: 'red',
+    paddingBottom: 10,
+    paddingLeft: 50
   },
   content: {
     paddingBottom: 15
   }
 });
+
+FilterScreen.navigationOptions = navigationdata => {
+  const subcatid = navigationdata.navigation.getParam('subcategoryId');
+  const subCat = SUBCATEGORIES.find(cat => cat.id === subcatid)
+   return{
+   headerTitle: subCat.title,
+   headerStyle: {
+     backgroundColor: 'white',
+   }
+ }
+ }
+
+
+
 /*
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';

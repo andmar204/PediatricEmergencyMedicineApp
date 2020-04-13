@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { CATEGORIES, SUBCATEGORIES } from '../data/categoriesData';
@@ -17,6 +16,9 @@ function displayOKAlert(title, message) {
   );
 }
 
+/**
+ * Deletes all messages from the database. 
+ */
 function deleteAllMessages() {
   firebase.database().ref('userCount').on('value', function (snapshot) {
     if (snapshot.val().count == 0) {
@@ -31,6 +33,10 @@ export default class SubCategoriesScreen extends Component {
     this.signOut = this.signOut.bind(this)
   }
 
+  /**
+   * Renders an item for the FlatList. This gets returned for every
+   * subcategory in a category. 
+   */
   renederGridItem = (itemData) => {
     categoryId = itemData.item.subId
     categoryTitle = this.props.navigation.getParam('categoryTitle')
@@ -49,7 +55,7 @@ export default class SubCategoriesScreen extends Component {
             this.props.navigation.navigate({
               routeName: 'CatContent',
               params: {
-                categoryId: itemData.item.id
+                subcategoryId: itemData.item.id
               }
             });
           }
@@ -60,9 +66,13 @@ export default class SubCategoriesScreen extends Component {
 
   catId = this.props.navigation.getParam('categoryId');
   //how to get specific subcategory
-  displaySub = SUBCATEGORIES.filter(meal => meal.subId.indexOf(this.catId) >= 0);
+  displaySub = SUBCATEGORIES.filter(cat => cat.subId.indexOf(this.catId) >= 0);
   displaySubSort = this.displaySub.sort((a, b) => (a.title > b.title) ? 1 : -1);
 
+  /**
+   * This sets the sign out button to only appear if the user is in
+   * the Chatroom & CME category screen.
+   */
   componentDidMount() {
     if (categoryId === 'c8') {
       this.props.navigation.setParams({
@@ -82,10 +92,16 @@ export default class SubCategoriesScreen extends Component {
     };
   };
 
+  /**
+   * Signs a user out. This also takes care of the decrementing of userCount, 
+   * the removal of the username from the onlineUsers list, and of the message
+   * deletion if the user signing out is the last user that's signed in.
+   */
   signOut = (props) => {
+    let signOutUser = Firebase.shared.userEmail
     firebase.auth().signOut().then(function () {
       Firebase.shared.setUserCount = -1;
-      console.log('FBUserCount decremented:', Firebase.shared.getUserCount)
+      Firebase.shared.removeOnlineUser(signOutUser)
       firebase.database().ref('userCount').on('value', function (snapshot) {
         if (snapshot.val().count <= 0) {
           deleteAllMessages()
@@ -104,72 +120,17 @@ export default class SubCategoriesScreen extends Component {
     );
   }
 }
-/*import React from 'react';
-import { View, Text, StyleSheet, Button, FlatList ,TouchableOpacity } from 'react-native';
-
-import {CATEGORIES, SUBCATEGORIES} from '../data/categoriesData';
-import CategoryGridTile from '../components/CategoryGridTile';
 
 
 
-const SubCategoriesScreen = props => {
-  
-  //added here to get acces to props
-  const renederGridItem = (itemData) => { 
-    return (
-      <CategoryGridTile
-        title={itemData.item.title}
-        color={itemData.item.color}
-        onSelect={() => { //onSelect func name trigget on component
-          props.navigation.navigate({
-            routeName: 'CatContent',
-            params: {
-              SubCategoryId: itemData.item.id
-            }
-          });
-        }}
-      />
-    );
-  };
-
-  const catId = props.navigation.getParam('categoryId');
-  //how to get specific subcategory
-  const displaySub = SUBCATEGORIES.filter(cat => cat.subId.indexOf(catId) >= 0);
-
-
-  return (
-    <FlatList data = {displaySub} renderItem ={renederGridItem} numColumns={2}/>
-
-  );
-};
-
-SubCategoriesScreen.navigationOptions ={
-  headerTitle: 'PEDIATRIC EMERGENCY APP',
+SubCategoriesScreen.navigationOptions = navigationdata => {
+ const catid = navigationdata.navigation.getParam('categoryId');
+ const Cattitle = CATEGORIES.find(cat => cat.id === catid)
+  return{
+  headerTitle: Cattitle.title,
   headerStyle: {
     backgroundColor: 'white',
-  },
-
-};
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor:'blue'
-    
-  },
-  
-
-  
-  tittles:{
-    fontSize:25,
-    color: '#CD5C5C',
-    textAlign: 'center'
   }
+}
+}
 
-
-});
-
-export default SubCategoriesScreen;
-*/

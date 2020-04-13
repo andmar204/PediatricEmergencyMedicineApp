@@ -18,6 +18,19 @@ on SearchBarScreen
 TypeError: undefined is not an object (evaluating 'result.toLowerCase')
 use: const [result, setResult] = useState('null');
 
-3/25/2020
+3/25/2020 (Andre)
 crypto variable not found
 firebase version downgrade
+
+4/7/2020
+changes added after P.O review
+
+on categoriesData.js -> changed searh and chatroom to first position
+on SubcategoriesScreen.js -> make new array displaySub sort array
+on categoriesData.js -> change colors on subcat to the same
+on categoryGridTile.js -> height :110 fontSize:20
+on LoginScreen.js -> added logo and its style
+
+on catCOntentScreen.js -> change order of list ej:managemet
+
+on PemNavigation.js -> delete header default
