@@ -7,7 +7,8 @@ import {
   Text,
   Alert,
   KeyboardAvoidingView,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -61,6 +62,9 @@ export default class Login extends Component {
   render() {
     return (
       <KeyboardAvoidingView styles={styles.container} behavior="position" enabled keyboardVerticalOffset="100">
+        <View>
+          <Image style={styles.logo} source={require('../data/logo.png')} />
+        </View>
         <View styles={styles.view}>
           <TextInput
             style={[styles.textField, styles.email]}
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
   },
   email: {
     marginBottom: 30,
-    marginTop: screenHeight * 0.3
+    marginTop: screenHeight * 0.18
   },
   loginButton: {
     marginTop: 20,
@@ -142,5 +146,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column'
+  },
+  logo: {
+    width: 250,
+    height: 150,
+    resizeMode: 'stretch',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginLeft:30
   }
 })

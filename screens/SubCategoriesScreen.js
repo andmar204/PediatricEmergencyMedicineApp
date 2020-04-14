@@ -55,7 +55,7 @@ export default class SubCategoriesScreen extends Component {
             this.props.navigation.navigate({
               routeName: 'CatContent',
               params: {
-                categoryId: itemData.item.id
+                subcategoryId: itemData.item.id
               }
             });
           }
@@ -66,7 +66,8 @@ export default class SubCategoriesScreen extends Component {
 
   catId = this.props.navigation.getParam('categoryId');
   //how to get specific subcategory
-  displaySub = SUBCATEGORIES.filter(meal => meal.subId.indexOf(this.catId) >= 0);
+  displaySub = SUBCATEGORIES.filter(cat => cat.subId.indexOf(this.catId) >= 0);
+  displaySubSort = this.displaySub.sort((a, b) => (a.title > b.title) ? 1 : -1);
 
   /**
    * This sets the sign out button to only appear if the user is in
@@ -115,7 +116,18 @@ export default class SubCategoriesScreen extends Component {
 
   render() {
     return (
-      <FlatList data={this.displaySub} renderItem={this.renederGridItem} numColumns={2} />
+      <FlatList data={this.displaySubSort} renderItem={this.renederGridItem} numColumns={2} />
     );
+  }
+}
+
+SubCategoriesScreen.navigationOptions = navigationdata => {
+  const catid = navigationdata.navigation.getParam('categoryId');
+  const Cattitle = CATEGORIES.find(cat => cat.id === catid)
+  return {
+    headerTitle: Cattitle.title,
+    headerStyle: {
+      backgroundColor: 'white'
+    }
   }
 }

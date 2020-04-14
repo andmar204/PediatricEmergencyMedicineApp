@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
     margin: 15,
-    height: 150,
+    height: 110,
     borderRadius: 10,
     overflow: 'hidden'
   },
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'open-sans-bold',
-    fontSize: 22,
+    fontSize: 20,
     textAlign: 'right'
   }
 });
