@@ -8,6 +8,7 @@ import CategoryGridTile from '../components/CategoryGridTile';
 
 let categoryId
 let categoryTitle
+let globalProps;
 
 function displayOKAlert(title, message) {
   Alert.alert(
@@ -27,10 +28,27 @@ function deleteAllMessages() {
   });
 }
 
+function signOut (props) {
+  let signOutUser = Firebase.shared.userEmail
+  firebase.auth().signOut().then(function () {
+    Firebase.shared.setUserCount = -1;
+    Firebase.shared.removeOnlineUser(signOutUser)
+    firebase.database().ref('userCount').on('value', function (snapshot) {
+      if (snapshot.val().count <= 0) {
+        deleteAllMessages()
+      }
+    })
+    props.navigation.navigate('Categories')
+  }).catch(function (err) {
+    displayOKAlert('Oh no!', 'Sign out failed: ' + err)
+    console.log(err)
+  });
+}
+
 export default class SubCategoriesScreen extends Component {
   constructor(props) {
     super(props)
-    this.signOut = this.signOut.bind(this)
+    //this.signOut = this.signOut.bind(this)
   }
 
   /**
@@ -74,10 +92,11 @@ export default class SubCategoriesScreen extends Component {
    * the Chatroom & CME category screen.
    */
   componentDidMount() {
+    globalProps = this.props
     if (categoryId === 'c8') {
       this.props.navigation.setParams({
         headerRight: (<Button title='Sign out' onPress={() => {
-          this.signOut(this.props)
+          signOut(this.props)
         }} />)
       })
     }
@@ -97,7 +116,7 @@ export default class SubCategoriesScreen extends Component {
    * the removal of the username from the onlineUsers list, and of the message
    * deletion if the user signing out is the last user that's signed in.
    */
-  signOut = (props) => {
+  /*signOut = (props) => {
     let signOutUser = Firebase.shared.userEmail
     firebase.auth().signOut().then(function () {
       Firebase.shared.setUserCount = -1;
@@ -112,7 +131,7 @@ export default class SubCategoriesScreen extends Component {
       displayOKAlert('Oh no!', 'Sign out failed: ' + err)
       console.log(err)
     });
-  }
+  }*/
 
   render() {
     return (
@@ -124,6 +143,19 @@ export default class SubCategoriesScreen extends Component {
 SubCategoriesScreen.navigationOptions = navigationdata => {
   const catid = navigationdata.navigation.getParam('categoryId');
   const Cattitle = CATEGORIES.find(cat => cat.id === catid)
+  console.log(Cattitle.title)
+  if (Cattitle.title === 'Chatroom & CME') {
+    return {
+      headerTitle: Cattitle.title,
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTintColor: '#CD5C5C',
+      headerRight: (<Button title='Sign out' onPress={() => {
+        signOut(globalProps)
+      }} />)
+    }
+  }
   return {
     headerTitle: Cattitle.title,
     headerStyle: {
