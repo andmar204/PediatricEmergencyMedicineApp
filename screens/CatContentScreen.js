@@ -89,6 +89,7 @@ FilterScreen.navigationOptions = navigationdata => {
   const subCat = SUBCATEGORIES.find(cat => cat.id === subcatid)
   return {
     headerTitle: subCat.title,
+    headerTintColor: '#CD5C5C',
     headerStyle: {
       backgroundColor: 'white',
     }

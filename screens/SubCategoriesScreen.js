@@ -127,7 +127,8 @@ SubCategoriesScreen.navigationOptions = navigationdata => {
   return {
     headerTitle: Cattitle.title,
     headerStyle: {
-      backgroundColor: 'white'
-    }
+      backgroundColor: 'white',
+    },
+    headerTintColor: '#CD5C5C'
   }
 }

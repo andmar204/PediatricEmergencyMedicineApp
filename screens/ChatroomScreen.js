@@ -25,7 +25,7 @@ class Chatroom extends Component {
     super(props)
 
     this.signOut = this.signOut.bind(this)
-    this.setOnlineUsers = this.setOnlineUsers.bind(this)
+    this.setOnlineUsersStr = this.setOnlineUsersStr.bind(this)
     this.displayOKAlert = this.displayOKAlert.bind(this)
   }
 
@@ -49,9 +49,9 @@ class Chatroom extends Component {
         message,
         [
           {
-            text: 'Refresh', 
+            text: 'Refresh',
             onPress: () => {
-              this.setOnlineUsers()
+              this.setOnlineUsersStr()
               this.displayOKAlert("Who\'s currently online", this.state.onlineUsers, true)
             }
           },
@@ -69,7 +69,7 @@ class Chatroom extends Component {
   }
 
   componentDidMount() {
-    this.setOnlineUsers();
+    this.setOnlineUsersStr();
     this.props.navigation.setParams({
       headerRight: (
         <View /*style={{ flexDirection: "row" }}*/>
@@ -84,9 +84,10 @@ class Chatroom extends Component {
             style={styles.whosOnlineButton}
             title={"Who\'s online"}
             onPress={() => {
+              this.setOnlineUsersStr()
               this.displayOKAlert(
                 "Who\'s currently online",
-                this.state.onlineUsers,
+                'Please tap \"Refresh\" to ensure the list is up to date\n\n' + this.state.onlineUsers,
                 true
               )
             }}
@@ -112,16 +113,22 @@ class Chatroom extends Component {
   /**
    * Sets the onlineUsers string. This is what will be passed to displayOKAlert.
    */
-  setOnlineUsers() {
+  setOnlineUsersStr() {
     console.log('RUNNING SETONLINEUSERS')
     let userStr = ''
     firebase.database().ref('onlineUsers').on('value', function (snapshot) {
       let arr = snapshot.val().onlineUsers
-      arr.forEach(element => {
-        if (!userStr.includes(element)) {
-          userStr += element + '\n'
-        }
-      });
+      if (arr) {
+        console.log('ARR', arr)
+        arr.forEach(element => {
+          if (!userStr.includes(element)) {
+            userStr += element + '\n'
+          }
+        });
+      } else {
+        console.log('arr is undefined')
+      }
+
     })
     this.setState({
       onlineUsers: userStr
