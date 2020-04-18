@@ -6,7 +6,8 @@ import {
   TextInput,
   FlatList,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -20,6 +21,13 @@ let cmes = []
 let newCme = {
   newCmeCert: '',
   newCmeExp: ''
+}
+
+function displayOKAlert(title, message) {
+  Alert.alert(
+    title,
+    message
+  );
 }
 
 export default class CME extends Component {
@@ -71,6 +79,7 @@ export default class CME extends Component {
     console.log('EXPDMbool3', !expDateMillis)
     if (!expDateMillis) {
       console.log('RETURNING FIRST FALSE')
+      displayOKAlert('Invalid date format', 'Please format your date as MM/DD/YYYY')
       return false
     }
     let today = new Date();
@@ -82,7 +91,7 @@ export default class CME extends Component {
       or earlier than the current date. I'm not allowing this since renewal dates supposed to be in the
       future.
       */
-      console.log('RETURNING SECOND FALSE')
+     displayOKAlert('Invalid date', 'Please make sure your date is later than today')
       return false
     }
     console.log('RETURNING TRUE')
