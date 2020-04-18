@@ -62,8 +62,14 @@ export default class CME extends Component {
    * @param {string} userDate 
    */
   isValidDate(userDate) {
+    console.log('USERDATE', userDate)
     let expDateMillis = Date.parse(userDate)
-    if (expDateMillis === NaN) {
+    console.log('EXPDM', expDateMillis)
+    console.log('EXPDMbool', expDateMillis === NaN)
+    console.log('EXPDMbool2', expDateMillis == NaN)
+    console.log('EXPDM2', expDateMillis)
+    console.log('EXPDMbool3', !expDateMillis)
+    if (!expDateMillis) {
       console.log('RETURNING FIRST FALSE')
       return false
     }
