@@ -28,7 +28,12 @@ function deleteAllMessages() {
   });
 }
 
-function signOut (props) {
+/**
+ * Signs a user out. This also takes care of the decrementing of userCount, 
+ * the removal of the username from the onlineUsers list, and of the message
+ * deletion if the user signing out is the last user that's signed in.
+ */
+function signOut(props) {
   let signOutUser = Firebase.shared.userEmail
   firebase.auth().signOut().then(function () {
     Firebase.shared.setUserCount = -1;
@@ -110,28 +115,6 @@ export default class SubCategoriesScreen extends Component {
       title: categoryTitle
     };
   };
-
-  /**
-   * Signs a user out. This also takes care of the decrementing of userCount, 
-   * the removal of the username from the onlineUsers list, and of the message
-   * deletion if the user signing out is the last user that's signed in.
-   */
-  /*signOut = (props) => {
-    let signOutUser = Firebase.shared.userEmail
-    firebase.auth().signOut().then(function () {
-      Firebase.shared.setUserCount = -1;
-      Firebase.shared.removeOnlineUser(signOutUser)
-      firebase.database().ref('userCount').on('value', function (snapshot) {
-        if (snapshot.val().count <= 0) {
-          deleteAllMessages()
-        }
-      })
-      props.navigation.navigate('Categories')
-    }).catch(function (err) {
-      displayOKAlert('Oh no!', 'Sign out failed: ' + err)
-      console.log(err)
-    });
-  }*/
 
   render() {
     return (
