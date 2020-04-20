@@ -1,0 +1,36 @@
+
+
+
+npm install --save react-navigation-stack
+
+
+3/7/2020
+error:
+undefined Unable to resolve module `react-native-gifted-chat
+npm i react-native-gifted-chat@0.12.0-beta-1
+
+3/9/2020
+npm install -g firebase-tools
+npm install firebase // this added all the dependencies needed on package-lock.json
+
+3/30/2020
+on SearchBarScreen
+TypeError: undefined is not an object (evaluating 'result.toLowerCase')
+use: const [result, setResult] = useState('null');
+
+3/25/2020 (Andre)
+crypto variable not found
+firebase version downgrade
+
+4/7/2020
+changes added after P.O review
+
+on categoriesData.js -> changed searh and chatroom to first position
+on SubcategoriesScreen.js -> make new array displaySub sort array
+on categoriesData.js -> change colors on subcat to the same
+on categoryGridTile.js -> height :110 fontSize:20
+on LoginScreen.js -> added logo and its style
+
+on catCOntentScreen.js -> change order of list ej:managemet
+
+on PemNavigation.js -> delete header default
