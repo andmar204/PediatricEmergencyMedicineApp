@@ -1,4 +1,26 @@
 /*
+Always keep this file commented. This file has two snippets
+of code. One to add all the dummy data for all the categories, 
+another to add data to one specific category. The way these
+work is that you simply copy and paste them into any button's 
+onPress method (I personally prefer to use the login button's
+onPress) and then click the button. That way, the button will
+run the code and add whatever it is you like to Firestore.
+*/
+
+/*SNIPPET 1
+
+SUBCATEGORIES.map(cat => firebase.firestore().collection('data').doc(cat.id).set({
+  catId: cat.id,
+  evaluation: cat.title + '_evaluation',
+  management: cat.title + '_management',
+  medications: cat.title + '_medications',
+  symptoms: cat.title + '_symptoms',
+  references: cat.title + '_references',
+}))
+*/
+
+/*
 keep this file always commented
 this file is just to enter data manually to the firebase database by
 using the following method and following html and JavaScript formats
@@ -6,8 +28,8 @@ use method on the login page on Onpress login button
 this is an example of how data was entered for the acetaminophen category
 */
 
+/*SNIPPET 2
 
-/*
 SUBCATEGORIES.map(cat => {
     if (cat.id === 'c4-1') {
       firebase.firestore().collection('data').doc(cat.id).set({
